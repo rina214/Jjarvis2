@@ -1,75 +1,64 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivity"
-    android:background="@color/colorPrimary">
-
-    <androidx.appcompat.widget.AppCompatImageView
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:background="#FFB0C4DE"
+    android:orientation="vertical">
+    <ImageView
+        android:contentDescription="JJARVIS"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="50dp"
-        android:src="@drawable/ic_launcher_foreground"/>
+        android:layout_height="200dp"
+        android:layout_margin="50dp"
+        android:src="@drawable/login"
+        android:background="#00ffffff"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        />
 
     <EditText
+        android:id="@+id/Id"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:hint="ID" />
-
-    <Spinner
-        android:id="@+id/age"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center"
-        android:hint="Age" />
+        android:hint="아이디"
+        android:maxLines="1"
+        android:singleLine="true" />
 
     <EditText
+        android:id="@+id/password"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:hint="Name" />
+        android:hint="비밀번호"
+        android:imeActionId="6"
+        android:imeOptions="actionUnspecified"
+        android:inputType="textPassword"
+        android:maxLines="1"
+        android:singleLine="true" />
 
-
-    <EditText
+    <LinearLayout
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:hint="Height" />
+        android:orientation="horizontal">
 
-    <EditText
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:hint="Weight" />
-
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:orientation="horizontal"
-        android:layout_width="200dp"
-        android:layout_gravity="center"
-        android:layout_height="wrap_content">
-
-        <RadioButton
+        <Button
+            android:id="@+id/sign_in_button"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:hint="Man" />
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:text="로그인"
+            android:textStyle="bold" />
 
-        <RadioButton
-            android:layout_width="100dp"
+        <Button
+            android:id="@+id/sign_up_button"
+            style="?android:textAppearanceSmall"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Woman" />
-    </RadioGroup>
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:text="회원가입"
+            android:textStyle="bold" />
+    </LinearLayout>
 
-    <Button
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:id="@+id/Submit"
-        android:hint="Submit" />
-
-</androidx.appcompat.widget.LinearLayoutCompat>
+</LinearLayout>

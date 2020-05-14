@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fffffafa">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#FFB0C4DE">
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="Mycart"
+            android:textSize="45dp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageButton
+            android:id="@+id/button77"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="290dp"
+            android:background="#00ffffff"
+            android:scaleType="fitXY"
+            android:src="@drawable/select"/>
+        <ImageButton
+            android:id="@+id/button78"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginLeft="350dp"
+            android:background="#00ffffff"
+            android:scaleType="fitXY"
+            android:src="@drawable/delete"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
+
+

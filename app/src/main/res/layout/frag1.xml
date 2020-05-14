@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fffffafa">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#FFB0C4DE">
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="Exercise"
+            android:textSize="45dp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageButton
+            android:id="@+id/button77"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginLeft="290dp"
+            android:background="#00ffffff"
+            android:scaleType="fitXY"
+            android:src="@drawable/cart"/>
+        <ImageButton
+            android:id="@+id/button78"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginLeft="350dp"
+            android:background="#00ffffff"
+            android:scaleType="fitXY"
+            android:src="@drawable/playbt"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="410dp"
+        android:layout_height="150dp">
+        <Button
+            android:id="@+id/button1_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:shape="rectangle"
+            android:width="200dp"
+            android:background="#cc6495ed"
+            android:text="세트별"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="130dp"
+            android:layout_marginBottom="40dp"/>
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="300dp"
+            android:width="100dp"
+            android:src="@drawable/ex1" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="410dp"
+        android:layout_height="150dp">
+        <Button
+            android:id="@+id/button1_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:shape="rectangle"
+            android:width="200dp"
+            android:background="#cc6495ed"
+            android:text="부위별"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="130dp"
+            android:layout_marginBottom="40dp"/>
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="300dp"
+            android:width="100dp"
+            android:src="@drawable/ex2" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="410dp"
+        android:layout_height="150dp">
+        <Button
+            android:id="@+id/button1_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:shape="rectangle"
+            android:width="200dp"
+            android:background="#cc6495ed"
+            android:text="커스텀"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="130dp"
+            android:layout_marginBottom="40dp"/>
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="300dp"
+            android:width="100dp"
+            android:src="@drawable/ex3" />
+    </RelativeLayout>
+
+
+</LinearLayout>
+
+
