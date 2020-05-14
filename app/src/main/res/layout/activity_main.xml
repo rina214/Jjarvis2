@@ -69,6 +69,7 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:id="@+id/Submit"
         android:hint="Submit" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

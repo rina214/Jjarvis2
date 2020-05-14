@@ -1,4 +1,4 @@
-package com.example.jjarvis;
+package com.example.jjarvis2;
 
 public class USER {
     private String userID;
