@@ -84,4 +84,5 @@ public class Login extends AppCompatActivity {
     //모르겠다 어떻게 중복검사해야할지..
 
     //여기다가 만들꺼임
+    //아니 왜 머지만 시키면 브렌치들 없어지냐고
 }
