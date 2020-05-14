@@ -61,6 +61,7 @@ public class Login extends AppCompatActivity {
                 RadioButton Gender = (RadioButton)findViewById(gender.getCheckedRadioButtonId());
                 String str_Gender = Gender.getText().toString();
                 boolean userGender = str_Gender == "Man" ? true : false;
+                DatabaseReference data = mDatabase.child("users");
 
                 writeNewUser(userID,userAge,userName,userHeight,userWeight,userPW,userGender);
 
@@ -74,10 +75,11 @@ public class Login extends AppCompatActivity {
         });
     }
     private void writeNewUser(String userID, int userAge, String userName, double userHeight, double userWeight, String userPW, boolean userGender) {
-        double userBMI = userWeight/(userHeight*userHeight/10000);
-        double userBMR = userGender ? 66+(13.8*userWeight)+(5*userHeight)-(6.8*userAge) : 655+(9.6*userWeight)+(1.8*userHeight)-(4.7*userAge);
-        double userDRC = userBMR*1.5;
-        USER user = new USER(userID,userAge,userName,userHeight,userWeight,userBMI,userBMR,userDRC,userPW,userGender);
+        double userBMI = userWeight / (userHeight * userHeight / 10000);
+        double userBMR = userGender ? 66 + (13.8 * userWeight) + (5 * userHeight) - (6.8 * userAge) : 655 + (9.6 * userWeight) + (1.8 * userHeight) - (4.7 * userAge);
+        double userDRC = userBMR * 1.5;
+        USER user = new USER(userID, userAge, userName, userHeight, userWeight, userBMI, userBMR, userDRC, userPW, userGender);
         mDatabase.child("users").child(userID).setValue(user);
     }
+    //모르겠다 어떻게 중복검사해야할지..
 }
