@@ -81,9 +81,5 @@ public class Login extends AppCompatActivity {
         USER user = new USER(userID, userAge, userName, userHeight, userWeight, userBMI, userBMR, userDRC, userPW, userGender);
         mDatabase.child("users").child(userID).setValue(user);
     }
-    //모르겠다 어떻게 중복검사해야할지..
-
-    //여기다가 만들꺼임
-    //아니 왜 머지만 시키면 브렌치들 없어지냐고
-    //알아낸거 같기두 아닌거 같기두
+    //크 드디어 알아냈다. 성공
 }
