@@ -82,4 +82,6 @@ public class Login extends AppCompatActivity {
         mDatabase.child("users").child(userID).setValue(user);
     }
     //모르겠다 어떻게 중복검사해야할지..
+
+    //여기다가 만들꺼임
 }
