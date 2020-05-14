@@ -18,7 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-//branch_test
+
 public class Login extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private Button button;
