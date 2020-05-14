@@ -85,5 +85,5 @@ public class Login extends AppCompatActivity {
 
     //여기다가 만들꺼임
     //아니 왜 머지만 시키면 브렌치들 없어지냐고
-    //알아낸거 같기두
+    //알아낸거 같기두 아닌거 같기두
 }
