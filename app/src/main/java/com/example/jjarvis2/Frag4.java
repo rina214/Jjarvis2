@@ -187,7 +187,7 @@ public class Frag4 extends Fragment {
         tv_frag4_date.setText(strDate);
         getImageFromStorage(Integer.parseInt(strDate.replace(".", "")));
     }
-    
+
 
     public void getNextDate() { //다음날
         calendar.add(Calendar.DAY_OF_WEEK, 1); //1일 후
