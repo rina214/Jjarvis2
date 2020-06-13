@@ -25,15 +25,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import org.tensorflow.lite.Interpreter;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -72,7 +78,9 @@ public class Frag4 extends Fragment {
     int date, breakfast, lunch, dinner, total;
     Calendar calendar;
     DatabaseReference mDatabase; //파이어베이스 데이터베이스
+    StorageReference storage; //파이어베이스 스토리지
     boolean check = false;
+    Bitmap breakfastBitmap, lunchBitmap, dinnerBitmap;
 
     @Nullable
     @Override
@@ -82,6 +90,7 @@ public class Frag4 extends Fragment {
         getXmlId();
         getDate();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        storage = FirebaseStorage.getInstance().getReference();
 
         ibtn_breakfast.setOnClickListener(new View.OnClickListener() { //아침 + 버튼을 누르면
             @Override
@@ -163,28 +172,77 @@ public class Frag4 extends Fragment {
         return view;
     }
 
-    public void getDate() {
+    public void getDate() { //오늘 날짜 설정
         calendar = Calendar.getInstance();
         Date currentTime = calendar.getTime();
         String strDate = new SimpleDateFormat("yyyy.MM.dd").format(currentTime);
         tv_frag4_date.setText(strDate);
-    } //오늘 날짜 설정
+        getImageFromStorage(Integer.parseInt(strDate.replace(".", "")));
+    }
 
-    public void getPreviousDate() {
+    public void getPreviousDate() { //이전날
         calendar.add(Calendar.DAY_OF_WEEK, -1); //1일 전
         Date currentTime = calendar.getTime();
         String strDate = new SimpleDateFormat("yyyy.MM.dd").format(currentTime);
         tv_frag4_date.setText(strDate);
-    } //이전날
+        getImageFromStorage(Integer.parseInt(strDate.replace(".", "")));
+    }
+    
 
-    public void getNextDate() {
+    public void getNextDate() { //다음날
         calendar.add(Calendar.DAY_OF_WEEK, 1); //1일 후
         Date currentTime = calendar.getTime();
         String strDate = new SimpleDateFormat("yyyy.MM.dd").format(currentTime);
         tv_frag4_date.setText(strDate);
-    } //다음날
+        getImageFromStorage(Integer.parseInt(strDate.replace(".", "")));
+    }
 
-    public void saveAll() {
+    public void getImageFromStorage(int date) {
+        final long ONE_MEGABYTE = 1024 * 1024;
+        String pathBreakfast = "test2_" + date + "_breakfast.jpg";
+        StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://jjarvis2-d7912.appspot.com");
+        storageReference.child(pathBreakfast).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                // Data for "images/island.jpg" is returns, use this as needed
+                Bitmap imgBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length );
+                ibtn_breakfast.setImageBitmap(imgBitmap);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                ibtn_breakfast.setImageResource(R.drawable.ic_add_black_24dp);
+            }
+        });
+        String pathLunch = "test2_" + date + "_lunch.jpg";
+        storageReference.child(pathLunch).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap imgBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length );
+                ibtn_lunch.setImageBitmap(imgBitmap);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                ibtn_lunch.setImageResource(R.drawable.ic_add_black_24dp);
+            }
+        });
+        String pathDinner = "test2_" + date + "_dinner.jpg";
+        storageReference.child(pathDinner).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap imgBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length );
+                ibtn_dinner.setImageBitmap(imgBitmap);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                ibtn_dinner.setImageResource(R.drawable.ic_add_black_24dp);
+            }
+        });
+    }
+
+    public void saveAll() { //데이터베이스에 저장
         String strDate = tv_frag4_date.getText().toString();
         strDate = strDate.replace(".", "");
         date = Integer.parseInt(strDate);
@@ -230,9 +288,42 @@ public class Frag4 extends Fragment {
             }
         });
 
+        ByteArrayOutputStream baosB = new ByteArrayOutputStream(); //이미지를 파이어베이스 스토리지에 저장
+        breakfastBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baosB);
+        byte[] breakfastData = baosB.toByteArray();
+        UploadTask uploadTaskB = storage.child("test2_" + date + "_breakfast.jpg").putBytes(breakfastData); //이미지 이름 : computer7214_20200531_breakfast.jpg
+        uploadTaskB.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {}
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {}
+        });
+        ByteArrayOutputStream baosL = new ByteArrayOutputStream();
+        lunchBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baosL);
+        byte[] lunchData = baosL.toByteArray();
+        UploadTask uploadTaskL = storage.child("test2_" + date + "_lunch.jpg").putBytes(lunchData);
+        uploadTaskL.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {}
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {}
+        });
+        ByteArrayOutputStream baosD = new ByteArrayOutputStream();
+        dinnerBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baosD);
+        byte[] dinnerData = baosD.toByteArray();
+        UploadTask uploadTaskD = storage.child("test2_" + date + "_dinner.jpg").putBytes(dinnerData);
+        uploadTaskD.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {}
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {}
+        });
     }
 
-    public void openGallery() { //갤러리 열기
+    public void openGallery() { //폰의 갤러리 열기
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -250,7 +341,7 @@ public class Frag4 extends Fragment {
                 try {
                     InputStream inputStream = resolver.openInputStream(fileUri);
                     Bitmap imgBitmap = BitmapFactory.decodeStream(inputStream); //사진 Bitmap
-                    if(imgBitmap.getWidth() < imgBitmap.getHeight()) {
+                    if(imgBitmap.getWidth() <= imgBitmap.getHeight()) {
                         Matrix matrix = new Matrix();
                         matrix.postRotate(90);
                         imgBitmap = Bitmap.createBitmap(imgBitmap,0, 0, imgBitmap.getWidth(), imgBitmap.getHeight(), matrix, true);
@@ -258,10 +349,13 @@ public class Frag4 extends Fragment {
                     imgBitmap = Bitmap.createScaledBitmap(imgBitmap, ibtn_breakfast.getWidth(), ibtn_breakfast.getWidth(), true);
                     if (when.equals("breakfast")) {
                         ibtn_breakfast.setImageBitmap(imgBitmap);
+                        breakfastBitmap = imgBitmap;
                     } else if (when.equals("lunch")) {
                         ibtn_lunch.setImageBitmap(imgBitmap);
+                        lunchBitmap = imgBitmap;
                     } else if (when.equals("dinner")) {
                         ibtn_dinner.setImageBitmap(imgBitmap);
+                        dinnerBitmap = imgBitmap;
                     }
                     inputStream.close();
 
