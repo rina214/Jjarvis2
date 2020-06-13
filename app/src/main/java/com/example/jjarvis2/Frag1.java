@@ -10,16 +10,19 @@ import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 
 public class Frag1 extends Fragment {
     View view;
-    //wonjune
+
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.frag1, container, false);
-
         ImageButton cart=(ImageButton)view.findViewById(R.id.button77);
         cart.setOnClickListener(new View.OnClickListener(){
             @Override

@@ -1,7 +1,7 @@
 package com.example.jjarvis2;
 
 public class USER {
-    private String userID;
+    private String userUid;
     private int userAge;
     private String userName;
     private double userHeight;
@@ -9,13 +9,12 @@ public class USER {
     private double userBMI;
     private double userBMR; //기초대사량
     private double userDRC; // Daily-Recommand-Calorie
-    private String userPW;
     private boolean userGender;
 
     public USER(){}
 
-    public USER(String userID, int userAge, String userName, double userHeight, double userWeight, double userBMI, double userBMR, double userDRC, String userPW, boolean userGender) {
-        this.userID = userID;
+    public USER(String userUid, int userAge, String userName, double userHeight, double userWeight, double userBMI, double userBMR, double userDRC, boolean userGender) {
+        this.userUid = userUid;
         this.userAge = userAge;
         this.userName = userName;
         this.userHeight = userHeight;
@@ -23,16 +22,15 @@ public class USER {
         this.userBMI = userBMI;
         this.userBMR = userBMR;
         this.userDRC = userDRC;
-        this.userPW = userPW;
         this.userGender = userGender;
     }
 
     public String getUserID() {
-        return userID;
+        return userUid;
     }
 
     public void setUserID(String userID) {
-        this.userID = userID;
+        this.userUid = userID;
     }
 
     public int getUserAge() {
@@ -89,14 +87,6 @@ public class USER {
 
     public void setUserDRC(double userDRC) {
         this.userDRC = userDRC;
-    }
-
-    public String getUserPW() {
-        return userPW;
-    }
-
-    public void setUserPW(String userPW) {
-        this.userPW = userPW;
     }
 
     public boolean isUserGender() {

@@ -40,18 +40,40 @@ public class MainActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 9001;
     private SignInButton signInButton;
+    private DatabaseReference mDatabase;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    String userUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         signInButton = findViewById(R.id.signInButton);
-
         mAuth = FirebaseAuth.getInstance();
-        if (mAuth.getCurrentUser() != null) {
-            Intent intent = new Intent(getApplication(), SubActivity.class);
-            startActivity(intent);
-            finish();
+        if (user != null) {
+            mDatabase = FirebaseDatabase.getInstance().getReference();
+            userUid = user.getUid();
+            if (mAuth.getCurrentUser() != null) {
+                mDatabase.child("users").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            String Uid = snapshot.getKey();
+                            if(userUid.equals(Uid)){
+                                Intent intent = new Intent(getApplication(), SubActivity.class);
+                                startActivity(intent);
+                                finish();
+                                return;
+                            }
+                        }
+                        Intent intent = new Intent(getApplication(), Login.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) { }
+                });
+            }
         }
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -105,9 +127,29 @@ public class MainActivity extends AppCompatActivity {
     }
     private void updateUI(FirebaseUser user) { //update ui code here
         if (user != null) {
-            Intent intent = new Intent(this, SubActivity.class);
-            startActivity(intent);
-            finish();
+            mDatabase = FirebaseDatabase.getInstance().getReference();
+            userUid = user.getUid();
+            if (mAuth.getCurrentUser() != null) {
+                mDatabase.child("users").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            String Uid = snapshot.getKey();
+                            if(userUid.equals(Uid)){
+                                Intent intent = new Intent(getApplication(), SubActivity.class);
+                                startActivity(intent);
+                                finish();
+                                return;
+                            }
+                        }
+                        Intent intent = new Intent(getApplication(), Login.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) { }
+                });
+            }
         }
     }
 }
