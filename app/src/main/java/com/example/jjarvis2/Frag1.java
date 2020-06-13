@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 
 public class Frag1 extends Fragment {
     View view;
-
+    //wonjune
 
     @Nullable
     @Override
