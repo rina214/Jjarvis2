@@ -32,6 +32,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:hint="ID" />
+    <EditText
+        android:id="@+id/PW"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:hint="PassWord" />
 
     <Spinner
         android:id="@+id/age"
