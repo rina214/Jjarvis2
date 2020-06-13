@@ -11,25 +11,4 @@
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-        <ImageButton
-            android:id="@+id/rightbutton"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="350dp"
-            android:background="#00ffffff"
-            android:scaleType="fitXY"
-            android:src="@drawable/rightbutton"/>
-
-    </RelativeLayout>
-
-    <GridView
-        android:id="@+id/gridview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-        android:listSelector="@color/transparent"
-        android:numColumns="7"></GridView>
-
 </LinearLayout>

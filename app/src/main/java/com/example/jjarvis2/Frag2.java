@@ -36,12 +36,6 @@ import android.widget.TextView;
 
 public class Frag2 extends Fragment {
     View view;
-
-    private TextView tvDate; //연,월 텍스트뷰
-    public GridAdapter gridAdapter; //그리드 어댑터
-    private ArrayList<String> dayList; //일 저장할 list
-    private GridView gridView; //그리드뷰
-    private Calendar mCal; //캘린더 변수
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
