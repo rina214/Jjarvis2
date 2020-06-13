@@ -1,7 +1,10 @@
 package com.example.jjarvis2;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 public class MainActivity extends AppCompatActivity {
     Button bt_sign_in;
     Button bt_sign_up;
+    boolean check_login = false;
     EditText et_id, et_password;
 
     private DatabaseReference mDatabase; //파이어베이스 데이터베이스
@@ -49,9 +53,21 @@ public class MainActivity extends AppCompatActivity {
                             if(user.getUserID().equals(et_id.getText().toString())
                                     && user.getUserPW().equals(et_password.getText().toString())){ //일치하는 회원 정보가 있으면
                                 Intent intent = new Intent(MainActivity.this, SubActivity.class);
+                                check_login = true;
                                 startActivity(intent);
                                 finish();
                             }
+                        }
+                        if(check_login==false) {
+                            new AlertDialog.Builder(MainActivity.this)
+                                    .setTitle("로그인 오류")
+                                    .setMessage("아이디, 비밀번호를 확인하십시오")
+                                    .setNeutralButton("닫기", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                        }
+                                    })
+                                    .show();
                         }
                     }
                     @Override
@@ -67,8 +83,6 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
 
     }
 
