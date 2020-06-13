@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class Login extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private Button button;
-    private EditText ID,name,height,weight;
+    private EditText ID,PW,name,height,weight;
     private Spinner spinner_age;
     private RadioGroup gender;
     @Override
@@ -45,6 +45,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ID = findViewById(R.id.ID);
+                PW = findViewById(R.id.PW);
                 spinner_age = findViewById(R.id.age);
                 name = findViewById(R.id.name);
                 height = findViewById(R.id.height);
@@ -52,22 +53,23 @@ public class Login extends AppCompatActivity {
                 gender = findViewById(R.id.radioGroup);
 
                 String userID = ID.getText().toString();
+                String userPW = PW.getText().toString();
                 String str_Age = spinner_age.getSelectedItem().toString();
                 String userName = name.getText().toString();
                 int userAge = Integer.parseInt(str_Age.substring(0,2));
                 double userHeight = Double.parseDouble(height.getText().toString());
                 double userWeight = Double.parseDouble(weight.getText().toString());
-                String userPW = "1111";
+
                 RadioButton Gender = (RadioButton)findViewById(gender.getCheckedRadioButtonId());
                 String str_Gender = Gender.getText().toString();
                 boolean userGender = str_Gender == "Man" ? true : false;
                 DatabaseReference data = mDatabase.child("users");
 
                 writeNewUser(userID,userAge,userName,userHeight,userWeight,userPW,userGender);
-
-                writeNewUser("asd147asd147",21,"최원준",170.0, 60.0, "zxc258zxc258", true);
-                writeNewUser("computer7214",22,"김리나",160.0, 40.0, "1234", false);
-                writeNewUser("sundaeluv98",23,"이지윤",170.0, 45.0, "7777", false);
+//
+//                writeNewUser("asd147asd147",21,"최원준",170.0, 60.0, "zxc258zxc258", true);
+//                writeNewUser("computer7214",22,"김리나",160.0, 40.0, "1234", false);
+//                writeNewUser("sundaeluv98",23,"이지윤",170.0, 45.0, "7777", false);
                 Intent intent = new Intent(Login.this, SubActivity.class);
                 startActivity(intent);
                 finish();
@@ -80,8 +82,9 @@ public class Login extends AppCompatActivity {
         double userDRC = userBMR * 1.5;
         USER user = new USER(userID, userAge, userName, userHeight, userWeight, userBMI, userBMR, userDRC, userPW, userGender);
         mDatabase.child("users").child(userID).setValue(user);
+
+//        String[] test = {"lunge","squat"};
+//        specification spec = new specification(20200503,1000,500,500,1000,test,"5키로감량하자");
+//        mDatabase.child("userdata").child(userID).child(String.valueOf(spec.year())).child(String.valueOf(spec.week())).child(String.valueOf(spec.getDate())).setValue(spec);
     }
-    //크 드디어 알아냈다. 성공
-    //찐찐막
-    //owner commit
 }
