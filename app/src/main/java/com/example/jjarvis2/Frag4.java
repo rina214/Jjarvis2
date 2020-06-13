@@ -102,6 +102,7 @@ public class Frag4 extends Fragment {
                 try {
                     InputStream inputStream = resolver.openInputStream(fileUri);
                     Bitmap imgBitmap = BitmapFactory.decodeStream(inputStream);
+
                     Matrix matrix = new Matrix();
                     matrix.postRotate(90);
                     imgBitmap = Bitmap.createBitmap(imgBitmap,0, 0, imgBitmap.getWidth(), imgBitmap.getHeight(), matrix, true);
