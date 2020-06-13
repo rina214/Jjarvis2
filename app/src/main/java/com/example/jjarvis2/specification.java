@@ -12,18 +12,16 @@ public class specification {
     private int lunch;
     private int dinner;
     private int cal;
-    private String[] exercise;
-    private String week_goal;
+    private Map<String,Integer> exercise = new HashMap<>();
 
     public specification(){};
-    public specification(int date, int breakfast, int lunch, int dinner, int cal, String[] exercise, String week_goal){
+    public specification(int date, int breakfast, int lunch, int dinner, int cal, Map<String,Integer> exercise){
         this.date = date;
         this.breakfast = breakfast;
         this.lunch = lunch;
         this.dinner = dinner;
         this.cal = cal;
         this.exercise = exercise;
-        this.week_goal = week_goal;
     }
 
     public int getDate() {
@@ -79,28 +77,13 @@ public class specification {
     public void setCal(int cal) {
         this.cal = cal;
     }
-    public String[] exercise(){
+
+    public Map<String,Integer>  getExercise(){
         return exercise;
     }
-    public List getExercise() {
-        List exe = new ArrayList();
-        for(int i = 0; i < exercise.length; i++){
-            exe.add(exercise[i]);
-        }
-        return exe;
-    }
 
-    public void setExercise(String[] exercise) {
+    public void setExercise(Map<String,Integer>  exercise) {
         this.exercise = exercise;
     }
 
-    public HashMap week_goal() {
-        HashMap<String,String> m = new HashMap<String,String>();
-        m.put("week_goal",week_goal);
-        return m;
-    }
-
-    public void setWeek_goal(String week_goal) {
-        this.week_goal = week_goal;
-    }
 }

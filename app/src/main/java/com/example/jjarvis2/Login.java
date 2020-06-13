@@ -24,6 +24,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Login extends AppCompatActivity {
     private DatabaseReference mDatabase;
@@ -146,9 +149,11 @@ public class Login extends AppCompatActivity {
         USER user = new USER(userID, userAge, userName, userHeight, userWeight, userBMI, userBMR, userDRC, userPW, userGender);
         mDatabase.child("users").child(userID).setValue(user);
 
-//        String[] test = {"lunge","squat"};
-//        specification spec = new specification(20200512,1000,500,500,1000,test,"5키로감량하자");
-//        mDatabase.child("userdata").child(userID).child(String.valueOf(spec.year())).child(String.valueOf(spec.week())).child(String.valueOf(spec.getDate())).setValue(spec);
-//        mDatabase.child("userdata").child(userID).child(String.valueOf(spec.year())).child(String.valueOf(spec.week())).updateChildren(spec.week_goal());
+        Map<String,Integer> test = new HashMap<>();
+        test.put("lunge",0);
+        test.put("squat",0);
+        specification spec = new specification(20200512,1000,500,500,1000,test);
+        mDatabase.child("userdata").child(userID).child(String.valueOf(spec.year())).child(String.valueOf(spec.week())).child(String.valueOf(spec.getDate())).setValue(spec);
+        //mDatabase.child("userdata").child(userID).child(String.valueOf(spec.year())).child(String.valueOf(spec.week())).updateChildren(spec.week_goal());
     }
 }
