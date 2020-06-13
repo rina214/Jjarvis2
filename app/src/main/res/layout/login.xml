@@ -32,12 +32,19 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:hint="ID" />
+    <Button
+        android:id="@+id/ValidID"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="중복확인"/>
+
     <EditText
         android:id="@+id/PW"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:hint="PassWord" />
+        android:hint="PassWord"
+        android:inputType="textPassword" />
 
     <Spinner
         android:id="@+id/age"

@@ -14,7 +14,7 @@ public class Frag2 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.frag2, container, false);
-
+        //wonjune
         return view;
     }
 }
