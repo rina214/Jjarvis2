@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Jjarvis2.iml" filepath="$PROJECT_DIR$/Jjarvis2.iml" group="Jjarvis2" />
+      <module fileurl="file://$PROJECT_DIR$/app/Jjarvis2-app.iml" filepath="$PROJECT_DIR$/app/Jjarvis2-app.iml" group="Jjarvis2/app" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="Jjarvis2/app" />
     </modules>
   </component>

@@ -109,11 +109,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="아침 : "/>
-            <TextView
-                android:id="@+id/tv_calorie_breakfast"
+            <EditText
+                android:id="@+id/et_calorie_breakfast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="000"/>
+                android:hint="아침 칼로리"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -129,11 +129,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="점심 : "/>
-            <TextView
-                android:id="@+id/tv_calorie_lunch"
+            <EditText
+                android:id="@+id/et_calorie_lunch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="000"/>
+                android:hint="점심 칼로리"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -149,11 +149,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="저녁 : "/>
-            <TextView
-                android:id="@+id/tv_calorie_dinner"
+            <EditText
+                android:id="@+id/et_calorie_dinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="000"/>
+                android:hint="저녁 칼로리"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -179,6 +179,13 @@
                 android:layout_height="wrap_content"
                 android:text=" kCal"/>
         </LinearLayout>
+        <Button
+            android:id="@+id/btn_frag4_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="저장"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"/>
     </LinearLayout>
 </ScrollView>
 
