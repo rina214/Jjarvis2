@@ -2,6 +2,7 @@ package com.example.jjarvis2;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -93,8 +94,10 @@ public class specification {
         this.exercise = exercise;
     }
 
-    public String getWeek_goal() {
-        return week_goal;
+    public HashMap week_goal() {
+        HashMap<String,String> m = new HashMap<String,String>();
+        m.put("week_goal",week_goal);
+        return m;
     }
 
     public void setWeek_goal(String week_goal) {

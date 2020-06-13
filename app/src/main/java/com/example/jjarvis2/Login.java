@@ -1,7 +1,10 @@
 package com.example.jjarvis2;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,16 +17,20 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 public class Login extends AppCompatActivity {
     private DatabaseReference mDatabase;
-    private Button button;
+    private Button button,ValidID;
     private EditText ID,PW,name,height,weight;
     private Spinner spinner_age;
+    private boolean checkID = false;
     private RadioGroup gender;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +38,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.login);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         button = (Button)findViewById(R.id.bt_submit);
+        ValidID = (Button)findViewById(R.id.ValidID);
         ArrayList<String> age = new ArrayList<String>();
         age.add("선택");
         for (int i = 10; i <= 61; i++) {
@@ -41,9 +49,64 @@ public class Login extends AppCompatActivity {
         Spinner spinYear = (Spinner)findViewById(R.id.age);
         spinYear.setAdapter(adapter);
 
-        findViewById(R.id.bt_submit).setOnClickListener(new View.OnClickListener() {
+        ValidID.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                ID = findViewById(R.id.ID);
+                mDatabase.child("users").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(checkID == false) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                String tempID = snapshot.getKey();
+                                if (tempID.equals(ID.getText().toString())) {
+                                    new AlertDialog.Builder(Login.this)
+                                            .setTitle("중복확인")
+                                            .setMessage("유효하지 않은 아이디 입니다.")
+                                            .setNeutralButton("닫기", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                }
+                                            })
+                                            .show();
+                                    return;
+                                }
+                            }
+                            checkID = true;
+                            ID.setEnabled(false);
+                            ValidID.setEnabled(false);
+                            new AlertDialog.Builder(Login.this)
+                                    .setTitle("중복확인")
+                                    .setMessage("유효한 아이디 입니다.")
+                                    .setNeutralButton("닫기", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                        }
+                                    })
+                                    .show();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) { }
+                });
+            }
+        });
+
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (checkID==false){
+                    new AlertDialog.Builder(Login.this)
+                            .setTitle("아이디")
+                            .setMessage("아이디 중복확인을 하십시오.")
+                            .setNeutralButton("닫기", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .show();
+                    return;
+                }
                 ID = findViewById(R.id.ID);
                 PW = findViewById(R.id.PW);
                 spinner_age = findViewById(R.id.age);
@@ -84,7 +147,8 @@ public class Login extends AppCompatActivity {
         mDatabase.child("users").child(userID).setValue(user);
 
 //        String[] test = {"lunge","squat"};
-//        specification spec = new specification(20200503,1000,500,500,1000,test,"5키로감량하자");
+//        specification spec = new specification(20200512,1000,500,500,1000,test,"5키로감량하자");
 //        mDatabase.child("userdata").child(userID).child(String.valueOf(spec.year())).child(String.valueOf(spec.week())).child(String.valueOf(spec.getDate())).setValue(spec);
+//        mDatabase.child("userdata").child(userID).child(String.valueOf(spec.year())).child(String.valueOf(spec.week())).updateChildren(spec.week_goal());
     }
 }
