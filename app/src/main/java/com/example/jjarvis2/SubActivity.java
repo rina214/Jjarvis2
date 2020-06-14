@@ -1,15 +1,19 @@
 package com.example.jjarvis2;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
 
 public class SubActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
@@ -23,9 +27,15 @@ public class SubActivity extends AppCompatActivity {
     Frag5 frag5;
     Frag77 frag77;
     Frag78 frag78;
+    Frag79 frag79;
     Frag6 frag6;
     Frag7 frag7;
     Frag8 frag8;
+
+    public interface OnBackKeyPressedListener {
+        public void onBack();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +49,7 @@ public class SubActivity extends AppCompatActivity {
         frag5 = new Frag5(); //프래그먼트 객채셍성 (1~5, main)
         frag77 = new Frag77();
         frag78 = new Frag78(); //1의 장바구니, 마이페이지
+        frag79 = new Frag79(); //장바구니에서 스케줄 생성페이로 이동
         frag6 = new Frag6();
         frag7 = new Frag7();
         frag8 = new Frag8(); //1-1,1-2,1-3
@@ -51,6 +62,7 @@ public class SubActivity extends AppCompatActivity {
         super.onDestroy();
         FirebaseAuth.getInstance().signOut();
     }
+
 
 
     /*@Override
@@ -128,6 +140,10 @@ public class SubActivity extends AppCompatActivity {
                 tran.replace(R.id.main_frame, frag78);
                 tran.commit(); // 1's Mylist
                 break;
+            case 79:
+                tran.replace(R.id.main_frame, frag79);
+                tran.commit(); // Mycart -> Scheduling
+                break;
             case 11:
                 tran.replace(R.id.main_frame, frag6);
                 tran.commit(); // 1-1
@@ -141,6 +157,12 @@ public class SubActivity extends AppCompatActivity {
                 tran.commit(); // 1-3
                 break;
         }
+    }
+
+    public void change(Fragment fragment, FragmentTransaction fragmentTransaction) {
+        fragmentTransaction.replace(R.id.main_frame, fragment);
+        fragmentTransaction.commit();
+
     }
 }
 
