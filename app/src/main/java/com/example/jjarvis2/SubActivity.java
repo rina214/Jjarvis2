@@ -57,6 +57,11 @@ public class SubActivity extends AppCompatActivity {
         setFrag(1); //첫 프레그먼트 지정
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener()); //Bot_navigation bar obj 형성
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        FirebaseAuth.getInstance().signOut();
+    }
 
 
 

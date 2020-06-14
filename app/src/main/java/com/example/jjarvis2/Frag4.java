@@ -2,14 +2,17 @@ package com.example.jjarvis2;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -78,13 +81,14 @@ public class Frag4 extends Fragment {
     String when = null;
     Map<String, Integer> exercise = new HashMap<>();
     int date, breakfast, lunch, dinner, total;
+    String breakfast_menu, lunch_menu, dinner_menu;
     Calendar calendar;
     DatabaseReference mDatabase; //파이어베이스 데이터베이스
     StorageReference storage; //파이어베이스 스토리지
-    boolean check = false;
     Bitmap breakfastBitmap, lunchBitmap, dinnerBitmap;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     String userUid;
+    boolean breakfastHasMenu = false, lunchHasMenu = false, dinnerHasMenu = false;
 
     @Nullable
     @Override
@@ -92,10 +96,11 @@ public class Frag4 extends Fragment {
         view = inflater.inflate(R.layout.frag4, container, false);
 
         getXmlId();
-        getDate();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         storage = FirebaseStorage.getInstance().getReference();
         userUid = user.getUid();
+        Log.d("userUID", userUid);
+        getDate();
         ibtn_breakfast.setOnClickListener(new View.OnClickListener() { //아침 + 버튼을 누르면
             @Override
             public void onClick(View v) {
@@ -142,6 +147,8 @@ public class Frag4 extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) { }
             @Override
             public void afterTextChanged(Editable s) { //입력이 끝났을 때
+                if(s.toString().equals(""))
+                    return;
                 breakfast = Integer.parseInt(s.toString());
                 int totalCalorie = breakfast + lunch + dinner;
                 tv_calorie_total.setText(Integer.toString(totalCalorie));
@@ -155,6 +162,8 @@ public class Frag4 extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
             @Override
             public void afterTextChanged(Editable s) {
+                if(s.toString().equals(""))
+                    return;
                 lunch = Integer.parseInt(s.toString());
                 int totalCalorie = breakfast + lunch + dinner;
                 tv_calorie_total.setText(Integer.toString(totalCalorie));
@@ -167,9 +176,47 @@ public class Frag4 extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) { }
             @Override
             public void afterTextChanged(Editable s) {
+                if(s.toString().equals(""))
+                    return;
                 dinner = Integer.parseInt(s.toString());
                 int totalCalorie = breakfast + lunch + dinner;
                 tv_calorie_total.setText(Integer.toString(totalCalorie));
+            }
+        });
+        et_menu_breakfast.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void afterTextChanged(Editable s) { //입력이 끝났을 때
+                if(s.toString().equals(""))
+                    return;
+                breakfast_menu = s.toString();
+            }
+        });
+        et_menu_lunch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void afterTextChanged(Editable s) { //입력이 끝났을 때
+                if(s.toString().equals(""))
+                    return;
+                lunch_menu = s.toString();
+            }
+        });
+        et_menu_dinner.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void afterTextChanged(Editable s) { //입력이 끝났을 때
+                if(s.toString().equals(""))
+                    return;
+                dinner_menu = s.toString();
             }
         });
 
@@ -181,27 +228,44 @@ public class Frag4 extends Fragment {
         Date currentTime = calendar.getTime();
         String strDate = new SimpleDateFormat("yyyy.MM.dd").format(currentTime);
         tv_frag4_date.setText(strDate);
-        getImageFromStorage(Integer.parseInt(strDate.replace(".", "")));
+        date = Integer.parseInt(strDate.replace(".", ""));
+        getImageFromStorage();
+        getInfoFromDatabase();
     }
 
     public void getPreviousDate() { //이전날
+        et_initialize();
         calendar.add(Calendar.DAY_OF_WEEK, -1); //1일 전
         Date currentTime = calendar.getTime();
         String strDate = new SimpleDateFormat("yyyy.MM.dd").format(currentTime);
         tv_frag4_date.setText(strDate);
-        getImageFromStorage(Integer.parseInt(strDate.replace(".", "")));
+        date = Integer.parseInt(strDate.replace(".", ""));
+        getImageFromStorage();
+        getInfoFromDatabase();
     }
 
 
     public void getNextDate() { //다음날
+        et_initialize();
         calendar.add(Calendar.DAY_OF_WEEK, 1); //1일 후
         Date currentTime = calendar.getTime();
         String strDate = new SimpleDateFormat("yyyy.MM.dd").format(currentTime);
         tv_frag4_date.setText(strDate);
-        getImageFromStorage(Integer.parseInt(strDate.replace(".", "")));
+        date = Integer.parseInt(strDate.replace(".", ""));
+        getImageFromStorage();
+        getInfoFromDatabase();
     }
 
-    public void getImageFromStorage(int date) {
+    public void et_initialize() {
+        et_menu_breakfast.setText(null);
+        et_menu_lunch.setText(null);
+        et_menu_dinner.setText(null);
+        et_calorie_breakfast.setText(null);
+        et_calorie_lunch.setText(null);
+        et_calorie_dinner.setText(null);
+    }
+
+    public void getImageFromStorage() {
         final long ONE_MEGABYTE = 1024 * 1024;
         String pathBreakfast = userUid + "_" + date + "_breakfast.jpg";
         StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://jjarvis2-d7912.appspot.com");
@@ -211,11 +275,14 @@ public class Frag4 extends Fragment {
                 // Data for "images/island.jpg" is returns, use this as needed
                 Bitmap imgBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length );
                 ibtn_breakfast.setImageBitmap(imgBitmap);
+                breakfastBitmap = imgBitmap;
+                breakfastHasMenu = true;
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 ibtn_breakfast.setImageResource(R.drawable.ic_add_black_24dp);
+                breakfastHasMenu = false;
             }
         });
         String pathLunch = userUid + "_" + date + "_lunch.jpg";
@@ -224,11 +291,14 @@ public class Frag4 extends Fragment {
             public void onSuccess(byte[] bytes) {
                 Bitmap imgBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length );
                 ibtn_lunch.setImageBitmap(imgBitmap);
+                lunchBitmap = imgBitmap;
+                lunchHasMenu = true;
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 ibtn_lunch.setImageResource(R.drawable.ic_add_black_24dp);
+                lunchHasMenu = false;
             }
         });
         String pathDinner = userUid + "_" + date + "_dinner.jpg";
@@ -237,12 +307,46 @@ public class Frag4 extends Fragment {
             public void onSuccess(byte[] bytes) {
                 Bitmap imgBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length );
                 ibtn_dinner.setImageBitmap(imgBitmap);
+                dinnerBitmap = imgBitmap;
+                dinnerHasMenu = true;
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 ibtn_dinner.setImageResource(R.drawable.ic_add_black_24dp);
+                dinnerHasMenu = false;
             }
+        });
+    }
+
+    public void getInfoFromDatabase() {
+        int year = date / 10000;
+        int month = (date / 100) % 100;
+        int day = date % 100;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year,month - 1, day);
+        int week = calendar.get(Calendar.WEEK_OF_YEAR);
+        Log.d("rina", userUid);
+        mDatabase.child("userdata").child(userUid).child(String.valueOf(year)).child(String.valueOf(week)).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d("snapshot", String.valueOf(dataSnapshot.getChildrenCount()));
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Log.d("snapshot", snapshot.toString());
+                    specification userdata = snapshot.getValue(specification.class);
+                    if (userdata.getDate() == date) {
+                        et_menu_breakfast.setText(userdata.getBreakfast_menu());
+                        et_menu_lunch.setText(userdata.getLunch_menu());
+                        et_menu_dinner.setText(userdata.getDinner_menu());
+                        et_calorie_breakfast.setText(String.valueOf(userdata.getBreakfast()));
+                        et_calorie_lunch.setText(String.valueOf(userdata.getLunch()));
+                        et_calorie_dinner.setText(String.valueOf(userdata.getDinner()));
+                        return;
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
     }
 
@@ -262,6 +366,18 @@ public class Frag4 extends Fragment {
             dinner = 0;
         } else
             dinner = Integer.parseInt(et_calorie_dinner.getText().toString());
+        if(et_menu_breakfast.getText().toString().equals("")){
+            breakfast_menu = null;
+        } else
+            breakfast_menu = et_menu_breakfast.getText().toString();
+        if(et_menu_lunch.getText().toString().equals("")){
+            lunch_menu = null;
+        } else
+            lunch_menu = et_menu_lunch.getText().toString();
+        if(et_menu_dinner.getText().toString().equals("")){
+            dinner_menu = null;
+        } else
+            dinner_menu = et_menu_dinner.getText().toString();
         total = Integer.parseInt(tv_calorie_total.getText().toString());
         int year = Integer.parseInt(strDate.substring(0,4));
         Calendar calendar = Calendar.getInstance();
@@ -272,18 +388,21 @@ public class Frag4 extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d("snapshot", String.valueOf(dataSnapshot.getChildrenCount()));
+
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Log.d("snapshot", snapshot.toString());
                     specification userdata = snapshot.getValue(specification.class);
                     if (userdata.getDate() == date) {
                         exercise = userdata.getExercise();
-                        specification spec = new specification(date,breakfast,lunch,dinner, total, exercise);
+                        specification spec = new specification(date, breakfast, lunch, dinner, total, breakfast_menu, lunch_menu, dinner_menu, exercise);
                         mDatabase.child("userdata").child(userUid).child(String.valueOf(spec.year())).child(String.valueOf(spec.week())).child(String.valueOf(spec.getDate())).setValue(spec);
+                        delay("데이터를 저장하는 중입니다.", 2000); //2초 딜레이
                         return;
                     }
                 }
-                specification spec = new specification(date,breakfast,lunch,dinner, total, exercise);
+                specification spec = new specification(date,breakfast,lunch,dinner, total, breakfast_menu, lunch_menu, dinner_menu, exercise);
                 mDatabase.child("userdata").child(userUid).child(String.valueOf(spec.year())).child(String.valueOf(spec.week())).child(String.valueOf(spec.getDate())).setValue(spec);
+                delay("데이터를 저장하는 중입니다.", 2000);
             }
 
             @Override
@@ -292,39 +411,60 @@ public class Frag4 extends Fragment {
             }
         });
 
-        ByteArrayOutputStream baosB = new ByteArrayOutputStream(); //이미지를 파이어베이스 스토리지에 저장
-        breakfastBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baosB);
-        byte[] breakfastData = baosB.toByteArray();
-        UploadTask uploadTaskB = storage.child(userUid + "_" + date + "_breakfast.jpg").putBytes(breakfastData); //이미지 이름 : computer7214_20200531_breakfast.jpg
-        uploadTaskB.addOnFailureListener(new OnFailureListener() {
+
+        if (breakfastHasMenu) {
+            ByteArrayOutputStream baosB = new ByteArrayOutputStream(); //이미지를 파이어베이스 스토리지에 저장
+            breakfastBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baosB);
+            byte[] breakfastData = baosB.toByteArray();
+            UploadTask uploadTaskB = storage.child(userUid + "_" + date + "_breakfast.jpg").putBytes(breakfastData); //이미지 이름 : computer7214_20200531_breakfast.jpg
+            uploadTaskB.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {}
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {}
+            });
+        }
+        if (lunchHasMenu) {
+            ByteArrayOutputStream baosL = new ByteArrayOutputStream();
+            lunchBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baosL);
+            byte[] lunchData = baosL.toByteArray();
+            UploadTask uploadTaskL = storage.child(userUid+"_" + date + "_lunch.jpg").putBytes(lunchData);
+            uploadTaskL.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {}
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {}
+            });
+        }
+        if (dinnerHasMenu) {
+            ByteArrayOutputStream baosD = new ByteArrayOutputStream();
+            dinnerBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baosD);
+            byte[] dinnerData = baosD.toByteArray();
+            UploadTask uploadTaskD = storage.child(userUid+"_" + date + "_dinner.jpg").putBytes(dinnerData);
+            uploadTaskD.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {}
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {}
+            });
+        }
+    }
+
+    public void delay(String message, int millisecond) {
+        final ProgressDialog oDialog = new ProgressDialog(getContext(),
+                android.R.style.Theme_DeviceDefault_Light_Dialog);
+        oDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        oDialog.setMessage(message);
+        oDialog.show();
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onFailure(@NonNull Exception e) {}
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {}
-        });
-        ByteArrayOutputStream baosL = new ByteArrayOutputStream();
-        lunchBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baosL);
-        byte[] lunchData = baosL.toByteArray();
-        UploadTask uploadTaskL = storage.child(userUid+"_" + date + "_lunch.jpg").putBytes(lunchData);
-        uploadTaskL.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {}
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {}
-        });
-        ByteArrayOutputStream baosD = new ByteArrayOutputStream();
-        dinnerBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baosD);
-        byte[] dinnerData = baosD.toByteArray();
-        UploadTask uploadTaskD = storage.child(userUid+"_" + date + "_dinner.jpg").putBytes(dinnerData);
-        uploadTaskD.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {}
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {}
-        });
+            public void run() {
+                oDialog.dismiss();
+            }
+        }, millisecond);// 0.5초 딜레이
     }
 
     public void openGallery() { //폰의 갤러리 열기
@@ -345,21 +485,29 @@ public class Frag4 extends Fragment {
                 try {
                     InputStream inputStream = resolver.openInputStream(fileUri);
                     Bitmap imgBitmap = BitmapFactory.decodeStream(inputStream); //사진 Bitmap
+                    ExifInterface exif = null;
+                    exif = new ExifInterface(inputStream); // path 파일 uri
+                    int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+                    imgBitmap = rotateBitmap(imgBitmap, orientation);
+                    /*
                     if(imgBitmap.getWidth() <= imgBitmap.getHeight()) {
                         Matrix matrix = new Matrix();
                         matrix.postRotate(90);
                         imgBitmap = Bitmap.createBitmap(imgBitmap,0, 0, imgBitmap.getWidth(), imgBitmap.getHeight(), matrix, true);
-                    }
+                    }*/
                     imgBitmap = Bitmap.createScaledBitmap(imgBitmap, ibtn_breakfast.getWidth(), ibtn_breakfast.getWidth(), true);
                     if (when.equals("breakfast")) {
                         ibtn_breakfast.setImageBitmap(imgBitmap);
                         breakfastBitmap = imgBitmap;
+                        breakfastHasMenu = true;
                     } else if (when.equals("lunch")) {
                         ibtn_lunch.setImageBitmap(imgBitmap);
                         lunchBitmap = imgBitmap;
+                        lunchHasMenu = true;
                     } else if (when.equals("dinner")) {
                         ibtn_dinner.setImageBitmap(imgBitmap);
                         dinnerBitmap = imgBitmap;
+                        dinnerHasMenu = true;
                     }
                     inputStream.close();
 
@@ -414,6 +562,46 @@ public class Frag4 extends Fragment {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    public static Bitmap rotateBitmap(Bitmap bitmap, int orientation) {
+        Matrix matrix = new Matrix();
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_NORMAL:
+                return bitmap;
+            case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
+                matrix.setScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                matrix.setRotate(180);
+                break;
+            case ExifInterface.ORIENTATION_FLIP_VERTICAL:
+                matrix.setRotate(180);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_TRANSPOSE:
+                matrix.setRotate(90);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                matrix.setRotate(90);
+                break;
+            case ExifInterface.ORIENTATION_TRANSVERSE:
+                matrix.setRotate(-90);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                matrix.setRotate(-90);
+                break;
+            default:
+                return bitmap;
+        } try {
+            Bitmap bmRotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            bitmap.recycle();
+            return bmRotated;
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace(); return null;
         }
     }
 
