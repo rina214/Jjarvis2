@@ -11,32 +11,30 @@
         <TextView
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
-            android:text="Calendar"
+            android:text="Scheduling"
             android:textSize="45dp"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>
-    <TextView
-        android:id="@+id/whenDate"
-        android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:gravity="center_vertical"
-        android:paddingLeft="170dp"
-        android:textColor="@color/color_21a4ff"
-        android:textSize="20sp" />
-
-    <CalendarView
+    <com.applikeysolutions.cosmocalendar.view.CalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:background="#33000000"
         android:focusedMonthDateColor="#3ffa7f"
         android:selectedWeekBackgroundColor="#ffff00"
         android:showWeekNumber="false"
         android:unfocusedMonthDateColor="#fafafa"
         android:weekSeparatorLineColor="#00ff00" />
-    />
+    <Button
+        android:id="@+id/set_button"
+        android:layout_width="200dp"
+        android:layout_height="61dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="65dp"
+        android:text="스케줄 생성"  />
 
 
 </LinearLayout>
