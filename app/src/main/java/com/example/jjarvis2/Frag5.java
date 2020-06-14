@@ -27,6 +27,7 @@ public class Frag5 extends Fragment {
     private DatabaseReference mDatabase;
     FirebaseUser user;
     String userUid;
+    //test
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
