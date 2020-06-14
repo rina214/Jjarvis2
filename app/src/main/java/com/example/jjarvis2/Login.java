@@ -94,7 +94,7 @@ public class Login extends AppCompatActivity {
         Map<String,Integer> test = new HashMap<>();
         test.put("lunge",0);
         test.put("squat",0);
-        specification spec = new specification(20200512,1000,500,500,1000,test);
+        specification spec = new specification(20200101,000,00,00,000,"", "", "",test);
         mDatabase.child("userdata").child(userUid).child(String.valueOf(spec.year())).child(String.valueOf(spec.week())).child(String.valueOf(spec.getDate())).setValue(spec);
         //mDatabase.child("userdata").child(userID).child(String.valueOf(spec.year())).child(String.valueOf(spec.week())).updateChildren(spec.week_goal());
     }
