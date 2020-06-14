@@ -162,7 +162,6 @@ public class SubActivity extends AppCompatActivity {
     public void change(Fragment fragment, FragmentTransaction fragmentTransaction) {
         fragmentTransaction.replace(R.id.main_frame, fragment);
         fragmentTransaction.commit();
-
     }
 }
 
