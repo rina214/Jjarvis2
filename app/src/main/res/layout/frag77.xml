@@ -34,9 +34,28 @@
             android:layout_marginLeft="350dp"
             android:background="#00ffffff"
             android:scaleType="fitXY"
-            android:src="@drawable/delete"/>
-
+            android:src="@drawable/delete"
+            />
     </RelativeLayout>
+        <Button
+            android:id="@+id/add"
+            android:layout_width="425dp"
+            android:layout_height="61dp"
+            android:text="일정추가하기" />
+        <ListView
+            android:id="@+id/listview"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:choiceMode="multipleChoice"
+            android:textColor ="@android:color/black"/>
+
+        <Button
+            android:id="@+id/frag99"
+            android:layout_width="425dp"
+            android:layout_height="61dp"
+            android:text="스케줄 생성하기"
+            android:layout_marginBottom="50dp"/>
 
 </LinearLayout>
 

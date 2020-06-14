@@ -4,11 +4,14 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
 
 public class SubActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
@@ -50,6 +53,7 @@ public class SubActivity extends AppCompatActivity {
         setFrag(1); //첫 프레그먼트 지정
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener()); //Bot_navigation bar obj 형성
     }
+
 
 
     /*@Override

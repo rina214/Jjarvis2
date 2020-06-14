@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/color_ffffff" >
+    android:background="#fffffafa">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
@@ -17,48 +17,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/whenDate"
+        android:layout_width="wrap_content"
         android:layout_height="45dp"
-        android:background="@color/color_ffffff">
-        <TextView
-            android:id="@+id/tv_date"
-            android:layout_width="wrap_content"
-            android:layout_height="45dp"
-            android:gravity="center_vertical"
-            android:paddingLeft="170dp"
-            android:textColor="@color/color_21a4ff"
-            android:textSize="20sp" />
+        android:gravity="center_vertical"
+        android:paddingLeft="170dp"
+        android:textColor="@color/color_21a4ff"
+        android:textSize="20sp" />
 
-        <ImageButton
-            android:id="@+id/leftbutton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:background="#00ffffff"
-            android:scaleType="fitXY"
-            android:src="@drawable/leftbutton" />
-
-        <ImageButton
-            android:id="@+id/rightbutton"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="350dp"
-            android:background="#00ffffff"
-            android:scaleType="fitXY"
-            android:src="@drawable/rightbutton"/>
-
-    </RelativeLayout>
-
-    <GridView
-        android:id="@+id/gridview"
+    <CalendarView
+        android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-        android:listSelector="@color/transparent"
-        android:numColumns="7"></GridView>
+        android:background="#33000000"
+        android:focusedMonthDateColor="#3ffa7f"
+        android:selectedWeekBackgroundColor="#ffff00"
+        android:showWeekNumber="false"
+        android:unfocusedMonthDateColor="#fafafa"
+        android:weekSeparatorLineColor="#00ff00" />
+    />
+
 
 </LinearLayout>

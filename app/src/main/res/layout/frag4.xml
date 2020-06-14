@@ -1,18 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#6B8E23">
+    android:background="#fffffafa">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
+        android:orientation="vertical"
+        android:background="#fffffafa">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="#FFB0C4DE">
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="Analyze"
+            android:textSize="45dp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        </RelativeLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="칼로리 분석"
-            android:textSize="30sp"/>
+            android:text="[칼로리 분석]"
+            android:textSize="30sp"
+            android:textColor="#FF000000"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,7 +75,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="아침" />
+                    android:text="아침"
+                    android:textColor="#FF000000"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
@@ -78,7 +94,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="점심" />
+                    android:text="점심"
+                    android:textColor="#FF000000"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
@@ -96,7 +113,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="저녁" />
+                    android:text="저녁"
+                    android:textColor="#FF000000"/>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
@@ -108,16 +126,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="아침 : "/>
+                android:text="아침 : "
+                android:textColor="#FF000000"/>
             <TextView
                 android:id="@+id/tv_calorie_breakfast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="000"/>
+                android:text="000"
+                android:textColor="#FF000000"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" kCal"/>
+                android:text=" kCal"
+                android:textColor="#FF000000"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -128,16 +149,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="점심 : "/>
+                android:text="점심 : "
+                android:textColor="#FF000000"/>
             <TextView
                 android:id="@+id/tv_calorie_lunch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="000"/>
+                android:text="000"
+                android:textColor="#FF000000"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" kCal"/>
+                android:text=" kCal"
+                android:textColor="#FF000000"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -148,16 +172,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="저녁 : "/>
+                android:text="저녁 : "
+                android:textColor="#FF000000"/>
             <TextView
                 android:id="@+id/tv_calorie_dinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="000"/>
+                android:text="000"
+                android:textColor="#FF000000"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" kCal"/>
+                android:text=" kCal"
+                android:textColor="#FF000000"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -168,16 +195,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="총 : "/>
+                android:text="총 : "
+                android:textColor="#FF000000"/>
             <TextView
                 android:id="@+id/tv_calorie_total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="000"/>
+                android:text="000"
+                android:textColor="#FF000000"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" kCal"/>
+                android:text=" kCal"
+                android:textColor="#FF000000"/>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
