@@ -2,7 +2,9 @@ package com.example.jjarvis2;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseBooleanArray;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +12,21 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Frag77 extends Fragment {
     View view;
     Button addButton;
     ImageButton deleteButton;
     ImageButton selectAllButton;
+    Button SchedulingButton;
     ArrayList<String> items;
     ListView listview;
     ArrayAdapter<String> adapter;
@@ -77,6 +84,7 @@ public class Frag77 extends Fragment {
 
 
         // selectAll button에 대한 이벤트 처리.
+
         selectAllButton = (ImageButton)view.findViewById(R.id.button77) ;
         selectAllButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
@@ -88,6 +96,38 @@ public class Frag77 extends Fragment {
                 }
             }
         }) ;
+
+        SchedulingButton = (Button)view.findViewById(R.id.schedule_set_button) ;
+        SchedulingButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //Log.d("SchedulingButton", String.valueOf(listview.getCheckedItemCount()));
+
+                if(listview.getCheckedItemCount() == 0) {
+                    Toast toast = Toast.makeText(getActivity(), "일정에 등록할 운동을 선택해주십시오.", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.BOTTOM|Gravity.CENTER, 0, 330);
+                    toast.show();
+                }
+                else {
+                    ArrayList<String> tmpList = new ArrayList<>();
+                    for(int i = 0; i < adapter.getCount(); i++) {
+                        if(listview.getCheckedItemPositions().get(i)) {
+                            tmpList.add(items.get(i));
+                        }
+                    }
+
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    Frag79 frag79 = Frag79.newInstance(tmpList);
+                    fragmentTransaction.replace(R.id.main_frame, frag79);
+                    fragmentTransaction.commit();
+
+//                    ((SubActivity) getActivity()).setFrag(79);
+
+                }
+            }
+        });
+
 
         return view;
     }

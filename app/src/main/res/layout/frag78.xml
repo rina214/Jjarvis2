@@ -19,8 +19,6 @@
             android:text="Mylist"
             android:textSize="45dp"
             android:textStyle="bold" />
-
-
     </RelativeLayout>
 
 </LinearLayout>
