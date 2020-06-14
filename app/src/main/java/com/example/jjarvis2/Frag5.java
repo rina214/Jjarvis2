@@ -68,8 +68,9 @@ public class Frag5 extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("users").child(userUid).removeValue();
         mDatabase.child("userdata").child(userUid).removeValue();
-        mAuth.getCurrentUser().delete();
         FirebaseAuth.getInstance().signOut();
+        user.delete();
+
     }
 }
 

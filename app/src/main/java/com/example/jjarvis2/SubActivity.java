@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -156,7 +157,6 @@ public class SubActivity extends AppCompatActivity {
     public void change(Fragment fragment, FragmentTransaction fragmentTransaction) {
         fragmentTransaction.replace(R.id.main_frame, fragment);
         fragmentTransaction.commit();
-
     }
 }
 

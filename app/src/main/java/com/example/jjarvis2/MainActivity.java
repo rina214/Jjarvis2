@@ -41,40 +41,17 @@ public class MainActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 9001;
     private SignInButton signInButton;
     private DatabaseReference mDatabase;
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    FirebaseUser user;
     String userUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FirebaseAuth.getInstance().signOut();
         signInButton = findViewById(R.id.signInButton);
         mAuth = FirebaseAuth.getInstance();
-        if (user != null) {
-            mDatabase = FirebaseDatabase.getInstance().getReference();
-            userUid = user.getUid();
-            if (mAuth.getCurrentUser() != null) {
-                mDatabase.child("users").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            String Uid = snapshot.getKey();
-                            if(userUid.equals(Uid)){
-                                Intent intent = new Intent(getApplication(), SubActivity.class);
-                                startActivity(intent);
-                                finish();
-                                return;
-                            }
-                        }
-                        Intent intent = new Intent(getApplication(), Login.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) { }
-                });
-            }
-        }
+        user = mAuth.getCurrentUser();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -87,6 +64,12 @@ public class MainActivity extends AppCompatActivity {
                 signIn();
             }
         });
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
     }
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
