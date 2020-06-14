@@ -12,15 +12,19 @@ public class specification {
     private int lunch;
     private int dinner;
     private int cal;
+    private String breakfast_menu, lunch_menu, dinner_menu;
     private Map<String,Integer> exercise = new HashMap<>();
 
     public specification(){};
-    public specification(int date, int breakfast, int lunch, int dinner, int cal, Map<String,Integer> exercise){
+    public specification(int date, int breakfast, int lunch, int dinner, int cal, String breakfast_menu, String lunch_menu, String dinner_menu, Map<String,Integer> exercise){
         this.date = date;
         this.breakfast = breakfast;
         this.lunch = lunch;
         this.dinner = dinner;
         this.cal = cal;
+        this.breakfast_menu = breakfast_menu;
+        this.lunch_menu = lunch_menu;
+        this.dinner_menu = dinner_menu;
         this.exercise = exercise;
     }
 
@@ -76,6 +80,30 @@ public class specification {
 
     public void setCal(int cal) {
         this.cal = cal;
+    }
+
+    public String getBreakfast_menu() {
+        return breakfast_menu;
+    }
+
+    public void setBreakfast_menu(String breakfast_menu) {
+        this.breakfast_menu = breakfast_menu;
+    }
+
+    public String getLunch_menu() {
+        return lunch_menu;
+    }
+
+    public void setLunch_menu(String lunch_menu) {
+        this.lunch_menu = lunch_menu;
+    }
+
+    public String getDinner_menu() {
+        return dinner_menu;
+    }
+
+    public void setDinner_menu(String dinner_menu) {
+        this.dinner_menu = dinner_menu;
     }
 
     public Map<String,Integer>  getExercise(){
