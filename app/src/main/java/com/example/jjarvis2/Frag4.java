@@ -78,16 +78,16 @@ public class Frag4 extends Fragment {
             "spaghetti_carbonara", "steak", "sushi", "takoyaki","waffles"};
     int[] CALORIES = {612, 560, 321, 203, 370, 237, 452, 120, 311, 229, 163, 349, 330, 520,
             /*칼로리*/       289, 207, 403, 153, 266, 436, 351, 646, 270, 45, 70, 291};
-    String when = null;
+    String when = null; //아침 or 점심 or 저녁
     Map<String, Integer> exercise = new HashMap<>();
-    int date, breakfast, lunch, dinner, total;
-    String breakfast_menu, lunch_menu, dinner_menu;
+    int date, breakfast, lunch, dinner, total; //date : 20200531, breakfast : 아침식사 칼로리, lunch : 점심식사 칼로리, dinner : 저녁식사 칼로리, total : 아침 + 점심 + 저녁 칼로리
+    String breakfast_menu, lunch_menu, dinner_menu; //아침, 점심, 저녁 식사 메뉴
     Calendar calendar;
     DatabaseReference mDatabase; //파이어베이스 데이터베이스
     StorageReference storage; //파이어베이스 스토리지
-    Bitmap breakfastBitmap, lunchBitmap, dinnerBitmap;
+    Bitmap breakfastBitmap, lunchBitmap, dinnerBitmap; //아침, 점심, 저녁 식사 이미지
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    String userUid;
+    String userUid; //구글 계정 UID
     boolean breakfastHasMenu = false, lunchHasMenu = false, dinnerHasMenu = false;
 
     @Nullable
@@ -95,30 +95,30 @@ public class Frag4 extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.frag4, container, false);
 
-        getXmlId();
+        getXmlId(); //xml 파일로부터 id를 받아서 메모리에 객체화
         mDatabase = FirebaseDatabase.getInstance().getReference();
         storage = FirebaseStorage.getInstance().getReference();
         userUid = user.getUid();
         Log.d("userUID", userUid);
-        getDate();
+        getDate(); //오늘 날짜를 받아옴
         ibtn_breakfast.setOnClickListener(new View.OnClickListener() { //아침 + 버튼을 누르면
             @Override
             public void onClick(View v) {
-                openGallery();
+                openGallery(); //갤러리 열기
                 when = "breakfast";
             }
         });
         ibtn_lunch.setOnClickListener(new View.OnClickListener() { //점심 + 버튼을 누르면
             @Override
             public void onClick(View v) {
-                openGallery();
+                openGallery(); //갤러리 열기
                 when = "lunch";
             }
         });
         ibtn_dinner.setOnClickListener(new View.OnClickListener() { //저녁 + 버튼을 누르면
             @Override
             public void onClick(View v) {
-                openGallery();
+                openGallery(); //갤러리 열기
                 when = "dinner";
             }
         });
@@ -229,8 +229,8 @@ public class Frag4 extends Fragment {
         String strDate = new SimpleDateFormat("yyyy.MM.dd").format(currentTime);
         tv_frag4_date.setText(strDate);
         date = Integer.parseInt(strDate.replace(".", ""));
-        getImageFromStorage();
-        getInfoFromDatabase();
+        getImageFromStorage(); //스토리지로부터 이미지를 받아옴
+        getInfoFromDatabase(); //데이터베이스로부터 정보를 받아옴
     }
 
     public void getPreviousDate() { //이전날
@@ -240,8 +240,8 @@ public class Frag4 extends Fragment {
         String strDate = new SimpleDateFormat("yyyy.MM.dd").format(currentTime);
         tv_frag4_date.setText(strDate);
         date = Integer.parseInt(strDate.replace(".", ""));
-        getImageFromStorage();
-        getInfoFromDatabase();
+        getImageFromStorage(); //스토리지로부터 이미지를 받아옴
+        getInfoFromDatabase(); //데이터베이스로부터 정보를 받아옴
     }
 
 
@@ -252,11 +252,11 @@ public class Frag4 extends Fragment {
         String strDate = new SimpleDateFormat("yyyy.MM.dd").format(currentTime);
         tv_frag4_date.setText(strDate);
         date = Integer.parseInt(strDate.replace(".", ""));
-        getImageFromStorage();
-        getInfoFromDatabase();
+        getImageFromStorage(); //스토리지로부터 이미지를 받아옴
+        getInfoFromDatabase(); //데이터베이스로부터 정보를 받아옴
     }
 
-    public void et_initialize() {
+    public void et_initialize() { //날짜 바꿀 때 입력란 초기화
         et_menu_breakfast.setText(null);
         et_menu_lunch.setText(null);
         et_menu_dinner.setText(null);
@@ -265,20 +265,19 @@ public class Frag4 extends Fragment {
         et_calorie_dinner.setText(null);
     }
 
-    public void getImageFromStorage() {
+    public void getImageFromStorage() { //스토리지로부터 이미지를 받아옴
         final long ONE_MEGABYTE = 1024 * 1024;
-        String pathBreakfast = userUid + "_" + date + "_breakfast.jpg";
+        String pathBreakfast = userUid + "_" + date + "_breakfast.jpg"; //이미지 이름 형식 : userUid_20200531_breakfast.jpg
         StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://jjarvis2-d7912.appspot.com");
         storageReference.child(pathBreakfast).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
-            public void onSuccess(byte[] bytes) {
-                // Data for "images/island.jpg" is returns, use this as needed
-                Bitmap imgBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length );
+            public void onSuccess(byte[] bytes) { //이미지가 있으면
+                Bitmap imgBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length ); //이미지를 bytes로 받아 Bitmap으로 변환
                 ibtn_breakfast.setImageBitmap(imgBitmap);
                 breakfastBitmap = imgBitmap;
                 breakfastHasMenu = true;
             }
-        }).addOnFailureListener(new OnFailureListener() {
+        }).addOnFailureListener(new OnFailureListener() { //이미지가 없으면
             @Override
             public void onFailure(@NonNull Exception exception) {
                 ibtn_breakfast.setImageResource(R.drawable.ic_add_black_24dp);
@@ -319,7 +318,7 @@ public class Frag4 extends Fragment {
         });
     }
 
-    public void getInfoFromDatabase() {
+    public void getInfoFromDatabase() { //데이터베이스로부터 정보를 받아옴
         int year = date / 10000;
         int month = (date / 100) % 100;
         int day = date % 100;
@@ -334,7 +333,7 @@ public class Frag4 extends Fragment {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Log.d("snapshot", snapshot.toString());
                     specification userdata = snapshot.getValue(specification.class);
-                    if (userdata.getDate() == date) {
+                    if (userdata.getDate() == date) { //해당 날짜가 데이터베이스에 존재하면 값을 읽어옴
                         et_menu_breakfast.setText(userdata.getBreakfast_menu());
                         et_menu_lunch.setText(userdata.getLunch_menu());
                         et_menu_dinner.setText(userdata.getDinner_menu());
@@ -396,7 +395,7 @@ public class Frag4 extends Fragment {
                         exercise = userdata.getExercise();
                         specification spec = new specification(date, breakfast, lunch, dinner, total, breakfast_menu, lunch_menu, dinner_menu, exercise);
                         mDatabase.child("userdata").child(userUid).child(String.valueOf(spec.year())).child(String.valueOf(spec.week())).child(String.valueOf(spec.getDate())).setValue(spec);
-                        delay("데이터를 저장하는 중입니다.", 2000); //2초 딜레이
+                        delay("데이터를 저장하는 중입니다.", 2000); //2초 딜레이 (값 저장할 때 시간 걸림)
                         return;
                     }
                 }
@@ -411,12 +410,11 @@ public class Frag4 extends Fragment {
             }
         });
 
-
-        if (breakfastHasMenu) {
+        if (breakfastHasMenu) { //아침 식사 이미지가 있으면
             ByteArrayOutputStream baosB = new ByteArrayOutputStream(); //이미지를 파이어베이스 스토리지에 저장
             breakfastBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baosB);
             byte[] breakfastData = baosB.toByteArray();
-            UploadTask uploadTaskB = storage.child(userUid + "_" + date + "_breakfast.jpg").putBytes(breakfastData); //이미지 이름 : computer7214_20200531_breakfast.jpg
+            UploadTask uploadTaskB = storage.child(userUid + "_" + date + "_breakfast.jpg").putBytes(breakfastData); //이미지 이름 : userUid_20200531_breakfast.jpg
             uploadTaskB.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {}
@@ -453,7 +451,7 @@ public class Frag4 extends Fragment {
         }
     }
 
-    public void delay(String message, int millisecond) {
+    public void delay(String message, int millisecond) { //잠시 기다리는 Dialog 사용
         final ProgressDialog oDialog = new ProgressDialog(getContext(),
                 android.R.style.Theme_DeviceDefault_Light_Dialog);
         oDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -464,7 +462,7 @@ public class Frag4 extends Fragment {
             public void run() {
                 oDialog.dismiss();
             }
-        }, millisecond);// 0.5초 딜레이
+        }, millisecond);
     }
 
     public void openGallery() { //폰의 갤러리 열기
@@ -486,16 +484,10 @@ public class Frag4 extends Fragment {
                     InputStream inputStream = resolver.openInputStream(fileUri);
                     Bitmap imgBitmap = BitmapFactory.decodeStream(inputStream); //사진 Bitmap
                     ExifInterface exif = null;
-                    exif = new ExifInterface(inputStream); // path 파일 uri
+                    exif = new ExifInterface(inputStream);
                     int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
-                    imgBitmap = rotateBitmap(imgBitmap, orientation);
-                    /*
-                    if(imgBitmap.getWidth() <= imgBitmap.getHeight()) {
-                        Matrix matrix = new Matrix();
-                        matrix.postRotate(90);
-                        imgBitmap = Bitmap.createBitmap(imgBitmap,0, 0, imgBitmap.getWidth(), imgBitmap.getHeight(), matrix, true);
-                    }*/
-                    imgBitmap = Bitmap.createScaledBitmap(imgBitmap, ibtn_breakfast.getWidth(), ibtn_breakfast.getWidth(), true);
+                    imgBitmap = rotateBitmap(imgBitmap, orientation); //이미지가 자동 회전되는 것을 방지
+                    imgBitmap = Bitmap.createScaledBitmap(imgBitmap, ibtn_breakfast.getWidth(), ibtn_breakfast.getWidth(), true); //이미지 크기를 정사각형으로 맞춤
                     if (when.equals("breakfast")) {
                         ibtn_breakfast.setImageBitmap(imgBitmap);
                         breakfastBitmap = imgBitmap;
@@ -565,7 +557,7 @@ public class Frag4 extends Fragment {
         }
     }
 
-    public static Bitmap rotateBitmap(Bitmap bitmap, int orientation) {
+    public static Bitmap rotateBitmap(Bitmap bitmap, int orientation) { //이미지 자동 회전 방지
         Matrix matrix = new Matrix();
         switch (orientation) {
             case ExifInterface.ORIENTATION_NORMAL:
@@ -605,7 +597,7 @@ public class Frag4 extends Fragment {
         }
     }
 
-    private Interpreter getTfliteInterpreter(String modelPath) {
+    private Interpreter getTfliteInterpreter(String modelPath) { //tflite 모델을 읽음
         try {
             return new Interpreter(loadModelFile(getActivity(), modelPath));
         } catch (Exception e) {
