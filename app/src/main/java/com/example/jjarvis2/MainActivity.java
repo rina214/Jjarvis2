@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+    //TODO google login 고쳐보기
     private void updateUI(FirebaseUser user) { //update ui code here
         if (user != null) {
             mDatabase = FirebaseDatabase.getInstance().getReference();
