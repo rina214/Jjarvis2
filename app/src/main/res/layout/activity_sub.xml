@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -19,21 +19,21 @@
     <FrameLayout
         android:id="@+id/main_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottomNavigationView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="0dp"
-            android:layout_marginStart="0dp"
-            android:layout_gravity="bottom"
-            android:background="#FFB0C4DE"
-            app:itemIconTint="@drawable/item_color"
-            app:itemTextColor="@drawable/item_color"
-            app:labelVisibilityMode="labeled"
-            app:menu="@menu/menu_bottomnavigationview" />
-    </FrameLayout>
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomNavigationView"/>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="0dp"
+        android:layout_gravity="bottom"
+        android:background="#FFB0C4DE"
+        app:itemIconTint="@drawable/item_color"
+        app:itemTextColor="@drawable/item_color"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/menu_bottomnavigationview"
+        android:layout_alignParentBottom="true"/>
 
 
 </RelativeLayout>

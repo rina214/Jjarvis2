@@ -257,6 +257,12 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:background="#cc6495ed"/>
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chart"
+                android:layout_width="match_parent"
+                android:layout_height="230dp"
+                android:layout_marginTop="30dp"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
