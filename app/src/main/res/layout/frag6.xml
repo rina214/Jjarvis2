@@ -164,11 +164,5 @@
                 android:width="100dp"
                 android:src="@drawable/ex3" />
         </RelativeLayout>
-
-
-
-
-
-
     </LinearLayout>
 </ScrollView>
