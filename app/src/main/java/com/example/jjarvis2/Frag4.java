@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
@@ -24,10 +25,19 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -55,6 +65,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -90,6 +101,12 @@ public class Frag4 extends Fragment {
     String userUid; //구글 계정 UID
     boolean breakfastHasMenu = false, lunchHasMenu = false, dinnerHasMenu = false;
 
+    private LineChart lineChart;
+    private static List<Entry> entries = new ArrayList<>();
+    private static ArrayList<String> labels = new ArrayList<>();
+    int graphX = 0;
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -101,6 +118,8 @@ public class Frag4 extends Fragment {
         userUid = user.getUid();
         Log.d("userUID", userUid);
         getDate(); //오늘 날짜를 받아옴
+        getGraph(); //그래프
+
         ibtn_breakfast.setOnClickListener(new View.OnClickListener() { //아침 + 버튼을 누르면
             @Override
             public void onClick(View v) {
@@ -396,6 +415,7 @@ public class Frag4 extends Fragment {
                         specification spec = new specification(date, breakfast, lunch, dinner, total, breakfast_menu, lunch_menu, dinner_menu, exercise);
                         mDatabase.child("userdata").child(userUid).child(String.valueOf(spec.year())).child(String.valueOf(spec.week())).child(String.valueOf(spec.getDate())).setValue(spec);
                         delay("데이터를 저장하는 중입니다.", 2000); //2초 딜레이 (값 저장할 때 시간 걸림)
+                        getGraph();
                         return;
                     }
                 }
@@ -613,6 +633,104 @@ public class Frag4 extends Fragment {
         long startOffset = fileDescriptor.getStartOffset();
         long declaredLength = fileDescriptor.getDeclaredLength();
         return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
+    }
+
+    public void getEntry(Calendar myCalendar, int graphX) {
+        int week = myCalendar.get(Calendar.WEEK_OF_YEAR);
+        Date currentTime = myCalendar.getTime();
+        String strDate = new SimpleDateFormat("yyyyMMdd").format(currentTime);
+        mDatabase.child("userdata").child(userUid).child(String.valueOf(strDate.substring(0,4))).child(String.valueOf(week)).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d("snapshot", String.valueOf(dataSnapshot.getChildrenCount()));
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Log.d("snapshot", snapshot.toString());
+                    specification userdata = snapshot.getValue(specification.class);
+                    if (userdata.getDate() == Integer.parseInt(strDate)) { //해당 날짜가 데이터베이스에 존재하면 값을 읽어옴
+                        entries.add(new Entry(graphX, (float) userdata.getCal()));
+                        entries.sort(new Comparator<Entry>() {
+                            @Override
+                            public int compare(Entry o1, Entry o2) {
+                                return (int)(o1.getX() - o2.getX());
+                            }
+                        });
+                        graphDrawing(entries, labels, "섭취한 칼로리");
+                        return;
+                    }
+                }
+                entries.add(new Entry(graphX, 0f)); //해당 날짜가 데이터베이스에 존재하지 않으면 0칼로리를 추가함
+                entries.sort(new Comparator<Entry>() {
+                    @Override
+                    public int compare(Entry o1, Entry o2) {
+                        return (int)(o1.getX() - o2.getX());
+                    }
+                });
+                graphDrawing(entries, labels, "섭취한 칼로리");
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
+        });
+        myCalendar.add(Calendar.DAY_OF_WEEK, -1); //1일 전
+    }
+
+    public void getGraph() {
+        entries = new ArrayList<>();
+        Calendar myCalendar = Calendar.getInstance();
+        for(graphX = 0; graphX >= -7; graphX--) {
+            getEntry(myCalendar, graphX); //오늘 ~ 일주일 전의 각 데이터(섭취한 칼로리)를 얻어옴
+        }
+    }
+
+    public void graphDrawing(List<Entry> entries, final ArrayList<String> labels, String label){
+        lineChart = view.findViewById(R.id.chart);
+
+        LineDataSet lineDataSet = new LineDataSet(entries, label);
+        lineDataSet.setLineWidth(2);
+        lineDataSet.setCircleRadius(6);
+        lineDataSet.setCircleColor(Color.parseColor("#cc6495ed"));
+        lineDataSet.setCircleHoleColor(Color.WHITE);
+        lineDataSet.setColor(Color.parseColor("#cc6495ed"));
+        lineDataSet.setDrawCircleHole(true);
+        lineDataSet.setDrawCircles(true);
+        lineDataSet.setDrawHorizontalHighlightIndicator(false);
+        lineDataSet.setDrawHighlightIndicators(false);
+        lineDataSet.setDrawValues(false);
+
+        LineData lineData = new LineData(lineDataSet);
+        lineChart.setData(lineData);
+
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);//XAxis.XAxisPosition.BOTTOM_INSIDE
+        xAxis.setTextColor(Color.parseColor("#cc6495ed"));
+        xAxis.enableGridDashedLine(8,24,0);
+
+
+        YAxis yLAxis = lineChart.getAxisLeft();
+        yLAxis.setTextColor(Color.GRAY);
+
+        YAxis yRAxis = lineChart.getAxisRight();
+        yRAxis.setDrawLabels(false);
+        yRAxis.setDrawAxisLine(false);
+        yRAxis.setDrawGridLines(false);
+
+        yLAxis.setEnabled(true);
+        yRAxis.setAxisMinimum(0);
+
+
+        Description description = new Description();
+        description.setText("");
+
+        lineChart.setDoubleTapToZoomEnabled(false);
+        lineChart.setDrawGridBackground(false);
+        lineChart.setDescription(description);
+        lineChart.animateY(2000, Easing.EaseInCubic);
+        lineChart.invalidate();
+
+        MyMarkerView marker = new MyMarkerView(getContext(), R.layout.markerviewtext);
+        marker.setChartView(lineChart);
+        lineChart.setMarker(marker);
+        xAxis.setGranularityEnabled(true);
+
     }
 
     private void getXmlId() {
