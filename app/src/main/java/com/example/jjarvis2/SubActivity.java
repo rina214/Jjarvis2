@@ -1,24 +1,32 @@
 package com.example.jjarvis2;
 
+import androidx.fragment.app.FragmentManager;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.fitness.Fitness;
+import com.google.android.gms.fitness.data.DataType;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 public class SubActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     FragmentManager fm;
-    FragmentTransaction tran;
+    androidx.fragment.app.FragmentTransaction tran;
 
     Frag1 frag1;
     Frag2 frag2;
@@ -40,6 +48,20 @@ public class SubActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sub);
+        Fitness.getRecordingClient(this, GoogleSignIn.getLastSignedInAccount(this))
+                .subscribe(DataType.TYPE_ACTIVITY_SAMPLES)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "OnSuccess()");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "OnFailure()", e);
+                    }
+                });
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         frag1 = new Frag1();
@@ -57,12 +79,6 @@ public class SubActivity extends AppCompatActivity {
         setFrag(1); //첫 프레그먼트 지정
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener()); //Bot_navigation bar obj 형성
     }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        FirebaseAuth.getInstance().signOut();
-    }
-
 
 
     /*@Override
@@ -89,7 +105,7 @@ public class SubActivity extends AppCompatActivity {
     class ItemSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-            fm = getFragmentManager();
+            fm = getSupportFragmentManager();
             tran = fm.beginTransaction();
 
             switch (menuItem.getItemId()) {
@@ -113,7 +129,7 @@ public class SubActivity extends AppCompatActivity {
         }
     }
     public void setFrag(int n){    //프래그먼트를 교체하는 작업을 하는 메소드를 만들었습니다
-        fm = getFragmentManager();
+        fm = getSupportFragmentManager();
         tran = fm.beginTransaction();
         switch (n){ //replace의 매개변수는 (프래그먼트를 담을 영역 id, 프래그먼트 객체) 입니다.
             case 1:
@@ -162,7 +178,6 @@ public class SubActivity extends AppCompatActivity {
     public void change(Fragment fragment, FragmentTransaction fragmentTransaction) {
         fragmentTransaction.replace(R.id.main_frame, fragment);
         fragmentTransaction.commit();
-
     }
 }
 

@@ -61,9 +61,9 @@ public class Login extends AppCompatActivity {
                 weight = findViewById(R.id.weight);
                 gender = findViewById(R.id.radioGroup);
 
-                String userUid = user.getUid();;
+                String userUid = user.getUid();
                 String str_Age = spinner_age.getSelectedItem().toString();
-                String userName = user.getDisplayName();;
+                String userName = user.getDisplayName();
                 int userAge = Integer.parseInt(str_Age.substring(0,2));
                 double userHeight = Double.parseDouble(height.getText().toString());
                 double userWeight = Double.parseDouble(weight.getText().toString());

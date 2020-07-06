@@ -1,6 +1,6 @@
 package com.example.jjarvis2;
 
-import android.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,16 +16,24 @@ import androidx.recyclerview.widget.OrientationHelper;
 
 import com.applikeysolutions.cosmocalendar.utils.SelectionType;
 import com.applikeysolutions.cosmocalendar.view.CalendarView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Frag79 extends Fragment {
     View view;
     ArrayList<String> list;
     Button set_button;
+    private DatabaseReference mDatabase;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     public static Frag79 newInstance(ArrayList<String> list) {
         Frag79 frag79 = new Frag79();
@@ -49,7 +57,7 @@ public class Frag79 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.frag79, container, false);
-
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         Log.d("Frag79", list.get(0));
 
         CalendarView mCalendarView = (CalendarView) view.findViewById(R.id.calendarView);
@@ -75,7 +83,7 @@ public class Frag79 extends Fragment {
         {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth)
-            {
+            {c
                 String date = year + "/" + (month + 1) + "/" + dayOfMonth;
                 whenDate.setText(date); // 선택한 날짜로 설정
 
@@ -85,6 +93,16 @@ public class Frag79 extends Fragment {
         set_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                String userUid = user.getUid();
+                Map<String,Object> cart = new HashMap<>();
+                int i = 0;
+                for(String s : list){
+                    cart.put(s,i++);
+                }
+                exec e = new exec(20200101,cart);
+                mDatabase.child("userdata").child(userUid).child(String.valueOf(e.year())).child(String.valueOf(e.week())).child(String.valueOf(e.getDate())).child("exercise").setValue(e.getExercise());
+
+
                 ((SubActivity)getActivity()).setFrag(78);
             }
         });

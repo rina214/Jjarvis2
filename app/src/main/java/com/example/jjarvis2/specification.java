@@ -16,6 +16,10 @@ public class specification {
     private Map<String,Integer> exercise = new HashMap<>();
 
     public specification(){};
+    public specification(int date, Map<String,Integer> exercise){
+        this.date = date;
+        this.exercise = exercise;
+    }
     public specification(int date, int breakfast, int lunch, int dinner, int cal, String breakfast_menu, String lunch_menu, String dinner_menu, Map<String,Integer> exercise){
         this.date = date;
         this.breakfast = breakfast;

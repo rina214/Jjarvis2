@@ -1,6 +1,8 @@
 package com.example.jjarvis2;
 
-import android.app.Fragment;
+
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -15,8 +17,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -63,7 +64,7 @@ public class Frag77 extends Fragment {
         }) ;
 
 
-        // delete button에 대한 이벤트 처리.
+        //delete button에 대한 이벤트 처리.
         deleteButton = (ImageButton)view.findViewById(R.id.button78) ;
         deleteButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
@@ -83,7 +84,7 @@ public class Frag77 extends Fragment {
         }) ;
 
 
-        // selectAll button에 대한 이벤트 처리.
+        //selectAll button에 대한 이벤트 처리.
 
         selectAllButton = (ImageButton)view.findViewById(R.id.button77) ;
         selectAllButton.setOnClickListener(new Button.OnClickListener() {

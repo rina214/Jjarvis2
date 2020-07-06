@@ -1,10 +1,8 @@
 package com.example.jjarvis2;
 
-import android.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.content.Intent;
-import android.net.sip.SipSession;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +19,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.core.AuthTokenProvider;
 
 public class Frag5 extends Fragment {
     View view;
@@ -41,14 +38,13 @@ public class Frag5 extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
         if (user != null){
-            userUid = user.getUid();
+             userUid = user.getUid();
             btnLogout.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
                     signOut();
                     getActivity().finishAffinity();
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    startActivity(intent);
+                    System.runFinalization();
                     System.exit(0);
                 }
             });
@@ -72,8 +68,9 @@ public class Frag5 extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("users").child(userUid).removeValue();
         mDatabase.child("userdata").child(userUid).removeValue();
+        FirebaseAuth.getInstance().signOut();
         user.delete();
-        //FirebaseAuth.getInstance().signOut();
+
     }
 }
 
