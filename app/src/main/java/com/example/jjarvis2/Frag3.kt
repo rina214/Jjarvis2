@@ -23,24 +23,16 @@ import java.text.DateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-const val TAG = "BasicHistoryApi"
+const val TAG = "JJARVIS"
 
-/**
- * This enum is used to define actions that can be performed after a successful sign in to Fit.
- * One of these values is passed to the Fit sign-in, and returned in a successful callback, allowing
- * subsequent execution of the desired action.
- */
 enum class FitActionRequestCode {
     INSERT_AND_READ_DATA,
     UPDATE_AND_READ_DATA,
     DELETE_DATA
 }
-/**
- * This sample demonstrates how to use the History API of the Google Fit platform to insert data,
- * query against existing data, and remove data. It also demonstrates how to authenticate a user
- * with Google Play Services and how to properly represent data in a {@link DataSet}.
- */
+
 class Frag3 : Fragment() {
+
     private val dateFormat = DateFormat.getDateInstance()
     private val fitnessOptions: FitnessOptions by lazy {
         FitnessOptions.builder()
@@ -51,6 +43,7 @@ class Frag3 : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -65,6 +58,8 @@ class Frag3 : Fragment() {
         }
         return view
     }
+
+
 
     private fun fitSignIn(requestCode: FitActionRequestCode) {
         if (oAuthPermissionsApproved()) {
@@ -356,4 +351,5 @@ class Frag3 : Fragment() {
         msgFilter.next = logView
         Log.i(TAG, "Ready.")
     }
+
 }

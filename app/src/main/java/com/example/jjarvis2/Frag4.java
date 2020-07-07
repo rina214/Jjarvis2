@@ -674,12 +674,12 @@ public class Frag4 extends Fragment {
     }
 
     public void getGraph() {
-        entries = new ArrayList<>();
-        Calendar myCalendar = Calendar.getInstance();
+    entries = new ArrayList<>();
+    Calendar myCalendar = Calendar.getInstance();
         for(graphX = 0; graphX >= -7; graphX--) {
-            getEntry(myCalendar, graphX); //오늘 ~ 일주일 전의 각 데이터(섭취한 칼로리)를 얻어옴
-        }
+        getEntry(myCalendar, graphX); //오늘 ~ 일주일 전의 각 데이터(섭취한 칼로리)를 얻어옴
     }
+}
 
     public void graphDrawing(List<Entry> entries, final ArrayList<String> labels, String label){
         lineChart = view.findViewById(R.id.chart);

@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -25,7 +26,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Frag78 extends Fragment {
     View view;
@@ -33,6 +36,7 @@ public class Frag78 extends Fragment {
     int count;
     int width, height;
     int top,right,left,bottom;
+    Map<String,Object> listdata = new HashMap<String,Object>();
     LinearLayout list_item;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -58,9 +62,50 @@ public class Frag78 extends Fragment {
         return view;
     }
 
+    public void SetListener() {
+        View.OnClickListener Listener = new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                TextView tempchildlayout = (TextView)view.findViewById(v.getId());
+                mDatabase.child("userdata").child(user.getUid()).child("MyList").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                            String tvtext = "";
+                            String starttime = "", endtime = "";
+                            tvtext = snapshot.getKey() + "\n";
+                            for (DataSnapshot sn : snapshot.getChildren()){
+                                if (sn.getKey().equals("START")){
+                                    starttime = sn.getValue(String.class);
+                                }
+                                else if(sn.getKey().equals("END")){
+                                    endtime = sn.getValue(String.class);
+                                }
+                            }
+                            tvtext += starttime +"~ "+ endtime + "\n";
+                            if(tvtext.equals(tempchildlayout.getText())){
+                                listdata.clear();
+                                for (DataSnapshot sn : snapshot.getChildren()){
+                                    listdata.put(sn.getKey(),sn.getValue());
+                                }
+                            }
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+            }
+        };
+        for(int i=0; i < count; i++){
+            TextView tempchildlayout = (TextView)view.findViewById(i);
+            tempchildlayout.setOnClickListener(Listener);
+        }
+    }
+
     private void DynamicList(DataSnapshot snapshot) {
         RelativeLayout childlayout = new RelativeLayout(getContext());
-        childlayout.setId(count);
+
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         top = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,10,getResources().getDisplayMetrics());
         left = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,10,getResources().getDisplayMetrics());
@@ -72,7 +117,7 @@ public class Frag78 extends Fragment {
         childlayout.setLayoutParams(layoutParams);
 
         TextView tv = new TextView(getContext());
-
+        tv.setId(count);
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         String tvtext = "";
         String starttime = "", endtime = "";
@@ -84,11 +129,8 @@ public class Frag78 extends Fragment {
             else if(sn.getKey().equals("END")){
                 endtime = sn.getValue(String.class);
             }
-            else{
-
-            }
         }
-        tvtext += starttime +" ~ "+ endtime + "\n";
+        tvtext += starttime +"~ "+ endtime + "\n";
         tv.setText(tvtext);
         tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP,15);
         tv.setTextColor(Color.BLACK);
@@ -100,6 +142,7 @@ public class Frag78 extends Fragment {
 
         list_item.addView(childlayout);
         count++;
+        SetListener();
     }
 }
 
