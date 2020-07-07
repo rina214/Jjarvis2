@@ -36,12 +36,7 @@
             android:scaleType="fitXY"
             android:src="@drawable/delete"/>
     </RelativeLayout>
-    <Button
-        android:id="@+id/add"
-        android:layout_width="425dp"
-        android:layout_height="61dp"
-        android:layout_gravity="center"
-        android:text="일정 추가 ( DB 구축시 제거)" />
+
     <ListView
         android:id="@+id/listview"
         android:layout_weight="1"
