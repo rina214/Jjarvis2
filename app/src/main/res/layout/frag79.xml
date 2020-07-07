@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#fffffafa">
+    android:background="#FFFFFF">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
@@ -28,6 +28,17 @@
         android:showWeekNumber="false"
         android:unfocusedMonthDateColor="#fafafa"
         android:weekSeparatorLineColor="#00ff00" />
+    <EditText
+        android:id="@+id/schedule_set_button"
+        android:layout_width="match_parent"
+        android:hint="스케줄 이름 입력"
+        android:textColorHint="@color/color_000000"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/color_000000"
+        android:layout_height="50dp" />
     <Button
         android:id="@+id/set_button"
         android:layout_width="200dp"
