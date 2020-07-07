@@ -106,8 +106,8 @@ public class Frag79 extends Fragment {
 
                     String userUid = user.getUid();
                     Map<String,Object> time = new HashMap<>();
-                    time.put("START",days.get(0).get(Calendar.YEAR)+"년 "+days.get(0).get(Calendar.MONTH)+"월 "+days.get(0).get(Calendar.DAY_OF_MONTH)+"일 ");
-                    time.put("END",days.get(days.size()-1).get(Calendar.YEAR)+"년 "+days.get(days.size()-1).get(Calendar.MONTH)+"월 "+days.get(days.size()-1).get(Calendar.DAY_OF_MONTH)+"일 ");
+                    time.put("START",days.get(0).get(Calendar.YEAR)+"년 "+(days.get(0).get(Calendar.MONTH)+1)+"월 "+days.get(0).get(Calendar.DAY_OF_MONTH)+"일 ");
+                    time.put("END",days.get(days.size()-1).get(Calendar.YEAR)+"년 "+(days.get(days.size()-1).get(Calendar.MONTH)+1)+"월 "+days.get(days.size()-1).get(Calendar.DAY_OF_MONTH)+"일 ");
                     for(String i : list){
                         time.put(i,0);
                     }
@@ -118,7 +118,7 @@ public class Frag79 extends Fragment {
                         cart.put(s,i++);
                     }
                     for(Calendar c : days){
-                        exec e = new exec(c.get(Calendar.YEAR)+c.get(Calendar.MONTH)+c.get(Calendar.DAY_OF_MONTH),cart);
+                        exec e = new exec(c.get(Calendar.YEAR)*10000+(c.get(Calendar.MONTH)+1)*100+c.get(Calendar.DAY_OF_MONTH),cart);
                         mDatabase.child("userdata").child(userUid).child(String.valueOf(e.year())).child(String.valueOf(e.week())).child(String.valueOf(e.getDate())).child("exercise").setValue(e.getExercise());
                     }
 

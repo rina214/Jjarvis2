@@ -78,6 +78,7 @@ public class Frag78 extends Fragment {
                             String starttime = "", endtime = "";
                             tvtext = snapshot.getKey() + "\n";
                             metadata.clear();
+                            metadata.put("LISTNAME",snapshot.getKey());
                             for (DataSnapshot sn : snapshot.getChildren()){
                                 if (sn.getKey().equals("START")){
                                     starttime = sn.getValue(String.class);
