@@ -26,9 +26,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Frag78 extends Fragment {
     View view;
@@ -36,7 +38,8 @@ public class Frag78 extends Fragment {
     int count;
     int width, height;
     int top,right,left,bottom;
-    Map<String,Object> listdata = new HashMap<String,Object>();
+    Map<String,Object> metadata = new HashMap<String,Object>();
+    ArrayList<String> execdata =new ArrayList<>();
     LinearLayout list_item;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -74,19 +77,31 @@ public class Frag78 extends Fragment {
                             String tvtext = "";
                             String starttime = "", endtime = "";
                             tvtext = snapshot.getKey() + "\n";
+                            metadata.clear();
                             for (DataSnapshot sn : snapshot.getChildren()){
                                 if (sn.getKey().equals("START")){
                                     starttime = sn.getValue(String.class);
+                                    metadata.put(sn.getKey(),sn.getValue());
                                 }
                                 else if(sn.getKey().equals("END")){
                                     endtime = sn.getValue(String.class);
+                                    metadata.put(sn.getKey(),sn.getValue());
                                 }
                             }
                             tvtext += starttime +"~ "+ endtime + "\n";
                             if(tvtext.equals(tempchildlayout.getText())){
-                                listdata.clear();
-                                for (DataSnapshot sn : snapshot.getChildren()){
-                                    listdata.put(sn.getKey(),sn.getValue());
+                                execdata.clear();
+                                for (DataSnapshot sn : snapshot.getChildren()) {
+                                    if (sn.getKey().equals("START") || sn.getKey().equals("END") ){
+                                    }
+                                    else{
+                                        execdata.add(sn.getKey());
+                                    }
+                                }
+                                System.out.println(metadata.get("START"));
+                                System.out.println(metadata.get("END"));
+                                for(String s : execdata){
+                                    System.out.println(s);
                                 }
                             }
                         }
