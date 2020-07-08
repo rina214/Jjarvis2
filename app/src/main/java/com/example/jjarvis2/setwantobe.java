@@ -31,6 +31,7 @@ public class setwantobe extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.setwant_activity);
 
+        wannabe= (EditText)findViewById(R.id.wannabe);
         btn_ok = (Button) findViewById(R.id.btn_ok);
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +44,6 @@ public class setwantobe extends Activity {
             }
         });
 
-        wannabe= (EditText)findViewById(R.id.wannabe);
+
     }
 }

@@ -20,7 +20,7 @@ public class fixinfo extends Activity {
     String userUid;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-    EditText wannabe;
+    EditText changed_height, changed_age, changed_kg;
     Button btn_ok;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +31,15 @@ public class fixinfo extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.fixinfo_activity);
 
+
+        changed_height= (EditText)findViewById(R.id.wannabe);
+        changed_age= (EditText)findViewById(R.id.wannabe);
+        changed_kg= (EditText)findViewById(R.id.wannabe);
         btn_ok = (Button) findViewById(R.id.btn_ok);
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String data = wannabe.getText().toString();
+                String data = changed_height.getText().toString();
                 Intent intent = new Intent();
                 intent.putExtra("DATA", data);
                 setResult(RESULT_OK, intent);
@@ -43,6 +47,6 @@ public class fixinfo extends Activity {
             }
         });
 
-        wannabe= (EditText)findViewById(R.id.wannabe);
+
     }
 }
