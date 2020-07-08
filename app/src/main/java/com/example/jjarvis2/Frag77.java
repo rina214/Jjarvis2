@@ -1,6 +1,7 @@
 package com.example.jjarvis2;
 
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.Fragment;
 import android.os.Bundle;
@@ -19,7 +20,17 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class Frag77 extends Fragment {
@@ -31,11 +42,12 @@ public class Frag77 extends Fragment {
     ArrayList<String> items;
     ListView listview;
     ArrayAdapter<String> adapter;
+    private DatabaseReference mDatabase;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.frag77, container, false);
-
         //String[] items = {"6/19 : 상체 운동 ", "6/25 스쿼트& 런지 조지기", "7/12 여름까지 복근 만들기"};
 
         items = new ArrayList<String>() ;
@@ -48,20 +60,21 @@ public class Frag77 extends Fragment {
         listview.setAdapter(adapter) ;
 
 
-        // add button에 대한 이벤트 처리.
-        addButton = (Button)view.findViewById(R.id.add) ;
-        addButton.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                int count;
-                count = adapter.getCount();
-
-                // 아이템 추가.
-                items.add("LIST" + Integer.toString(count + 1));
-
-                // listview 갱신
-                adapter.notifyDataSetChanged();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("userdata").child(user.getUid()).child("cart").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    items.add(snapshot.getKey());
+                    // listview 갱신
+                    adapter.notifyDataSetChanged();
+                }
             }
-        }) ;
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
         //delete button에 대한 이벤트 처리.
@@ -73,6 +86,7 @@ public class Frag77 extends Fragment {
 
                 for (int i = count-1; i >= 0; i--) {
                     if (checkedItems.get(i)) {
+                        mDatabase.child("userdata").child(user.getUid()).child("cart").child(items.get(i)).removeValue();
                         items.remove(i) ;
                     }
                 }
@@ -116,6 +130,11 @@ public class Frag77 extends Fragment {
                             tmpList.add(items.get(i));
                         }
                     }
+
+                    // 모든 선택 상태 초기화.
+                    listview.clearChoices() ;
+
+                    adapter.notifyDataSetChanged();
 
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

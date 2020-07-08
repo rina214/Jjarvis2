@@ -4,13 +4,12 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/list_item"
     android:background="#fffffafa">
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="#FFB0C4DE">
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -19,8 +18,18 @@
             android:text="Mylist"
             android:textSize="45dp"
             android:textStyle="bold" />
+        <ImageButton
+            android:id="@+id/button00"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="350dp"
+            android:background="#00ffffff"
+            android:scaleType="fitXY"
+            android:src="@drawable/delete"/>
 
     </RelativeLayout>
+
 
 </LinearLayout>
 
