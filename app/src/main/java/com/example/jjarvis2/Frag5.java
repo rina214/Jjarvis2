@@ -38,7 +38,14 @@ public class Frag5 extends Fragment {
         view = inflater.inflate(R.layout.frag5, container, false);
         user = FirebaseAuth.getInstance().getCurrentUser();
         //noti_button=(ImageButton)view.findViewById(R.id.button00);
-        //btnwanttobe = (Button)view.findViewById(R.id.button01);
+        btnwanttobe = (Button)view.findViewById(R.id.button01);
+        btnwanttobe.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //((SubActivity)getActivity()).setFrag(11);
+            }
+        });
+
         //btnchangeinfo  = (Button)view.findViewById(R.button02);
         btnLogout = (Button)view.findViewById(R.id.logout);
         btnRevoke = (Button)view.findViewById(R.id.revoke);
