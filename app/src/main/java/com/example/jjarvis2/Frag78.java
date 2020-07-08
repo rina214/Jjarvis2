@@ -67,7 +67,6 @@ public class Frag78 extends Fragment {
                 refresh();
             }
         }
-
     }
 
     private void refresh() {

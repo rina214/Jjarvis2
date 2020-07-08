@@ -43,14 +43,10 @@ public class fixinfo extends Activity {
                 String data2 = changed_age.getText().toString();
                 String data3 = changed_kg.getText().toString();
                 Intent intent1 = new Intent();
-                Intent intent2 = new Intent();
-                Intent intent3 = new Intent();
                 intent1.putExtra("DATA1", data1);
-                intent2.putExtra("DATA2", data2);
-                intent3.putExtra("DATA3", data3);
+                intent1.putExtra("DATA2", data2);
+                intent1.putExtra("DATA3", data3);
                 setResult(RESULT_OK, intent1);
-                setResult(RESULT_OK, intent2);
-                setResult(RESULT_OK, intent3);
                 finish();
             }
         });
