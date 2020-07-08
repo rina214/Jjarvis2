@@ -120,25 +120,6 @@ public class Frag4 extends Fragment {
         getDate(); //오늘 날짜를 받아옴
         getGraph(); //그래프
 
-        /*view.findViewById(R.id.btn_pose).setOnClickListener(new View.OnClickListener() { // -> Frag1에서 실행
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), CameraActivity.class);
-                getActivity().startActivityForResult(intent, 214);
-            }
-            public void onActivityResult(int requestCode, int resultCode, Intent data) {
-                if (requestCode == 214) {
-                    if (resultCode == RESULT_OK) {
-                        Toast.makeText(getContext(), "Result: " + data.getStringExtra("result"), Toast.LENGTH_SHORT).show();
-                    } else {   // RESULT_CANCEL
-                        Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
-                    }
-//              } else if (requestCode == REQUEST_ANOTHER) {
-//                    ...
-                }
-            }
-        });*/
-
         ibtn_breakfast.setOnClickListener(new View.OnClickListener() { //아침 + 버튼을 누르면
             @Override
             public void onClick(View v) {

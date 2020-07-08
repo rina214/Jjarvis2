@@ -278,17 +278,12 @@ class Camera2BasicFragment : Fragment(), FragmentCompat.OnRequestPermissionsResu
         }
 
       }
-      if (count == 5) {
-        activity.finish()
-      }
-
-
-
+      (activity as CameraActivity).changeCount(tv_count.text.toString())
     }
   }
 
-  private fun fsm() {
-
+  fun getCount() : String {
+    return tv_count!!.text.toString()
   }
 
   /**
