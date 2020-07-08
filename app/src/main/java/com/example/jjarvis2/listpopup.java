@@ -32,7 +32,7 @@ public class listpopup extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //타이틀바 없애기
+
 
         db = FirebaseDatabase.getInstance().getReference();
         userUid = user.getUid();

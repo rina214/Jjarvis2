@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +23,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import static android.app.Activity.RESULT_OK;
+
 public class Frag5 extends Fragment {
     TextView Userid_text, target_text;
     View view;
@@ -31,6 +34,7 @@ public class Frag5 extends Fragment {
     private DatabaseReference mDatabase;
     FirebaseUser user;
     String userUid;
+
     //test
     @Nullable
     @Override
@@ -42,7 +46,8 @@ public class Frag5 extends Fragment {
         btnwanttobe.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //((SubActivity)getActivity()).setFrag(11);
+                Intent intent = new Intent(getActivity(), setwantobe.class);
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -93,6 +98,16 @@ public class Frag5 extends Fragment {
             });
         }
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                String tmp = data.getStringExtra("DATA");
+                Toast.makeText(this.getContext(),tmp, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void signOut() {

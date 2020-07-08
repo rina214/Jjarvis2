@@ -49,6 +49,7 @@ class Frag3 : Fragment() {
     val SD = mutableListOf<String>()
     var i = 0
     var thread = Thread()
+    var tempindex = 0
 
     private val fitnessOptions: FitnessOptions by lazy {
         FitnessOptions.builder()
@@ -325,6 +326,10 @@ class Frag3 : Fragment() {
         // [START parse_read_data_result]
         // If the DataReadRequest object specified aggregated data, dataReadResult will be returned
         // as buckets containing DataSets, instead of just DataSets.
+        for(t in 7 downTo 1){
+            dailystep!!.add("0")
+        }
+        tempindex = 6
         if (dataReadResult.buckets.isNotEmpty()) {
             Log.i(TAG, "Number of returned buckets of DataSets is: " + dataReadResult.buckets.size)
             for (bucket in dataReadResult.buckets) {
@@ -341,7 +346,6 @@ class Frag3 : Fragment() {
     // [START parse_dataset]
     private fun dumpDataSet(dataSet: DataSet) {
 //        Log.i(TAG, "Data returned for Data type: ${dataSet.dataType.name}")
-
         for (dp in dataSet.dataPoints) {
 //            Log.i(TAG, "Data point:")
 //            Log.i(TAG, "\tType: ${dp.dataType.name}")
@@ -350,7 +354,7 @@ class Frag3 : Fragment() {
             dp.dataType.fields.forEach {
 //                Log.i(TAG, "\tField: ${it.name} Value: ${dp.getValue(it)}")
                 val s = "${dp.getValue(it)}"
-                dailystep!!.add(s)
+                dailystep[tempindex--] = s
             }
         }
     }
