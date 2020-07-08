@@ -3,21 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/color_ffffff">
 
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginTop="70dp"
-        android:layout_marginBottom="60dp">
-        <com.example.common.logger.LogView
-            android:id="@+id/sample_logview"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_000000"
-            android:scrollbars="vertical" />
-    </ScrollView>
-
+    <com.github.mikephil.charting.charts.LineChart
+        android:layout_marginTop="120dp"
+        android:id="@+id/view_left_line"
+        android:layout_width="match_parent"
+        android:layout_height="376dp"
+        />
     <FrameLayout
         android:id="@+id/main_frame"
         android:layout_width="match_parent"

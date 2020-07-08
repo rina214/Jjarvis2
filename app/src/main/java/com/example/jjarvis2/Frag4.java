@@ -734,7 +734,7 @@ public class Frag4 extends Fragment {
         yRAxis.setDrawGridLines(false);
 
         yLAxis.setEnabled(true);
-        yRAxis.setAxisMinimum(0);
+        yLAxis.setAxisMinimum(0);
 
 
         Description description = new Description();

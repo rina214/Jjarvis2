@@ -151,7 +151,7 @@ public class Frag8 extends Fragment {
 
         cate.addView(childlayout);
         count++;
-        System.out.println(ds.getKey());
+
         SetListener();
     }
 }

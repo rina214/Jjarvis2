@@ -82,7 +82,6 @@ public class Frag79 extends Fragment {
         });*/
         set_button=(Button)view.findViewById(R.id.set_button);
         set_button.setOnClickListener(new View.OnClickListener(){
-
             @Override
             public void onClick(View v) {
                     List<Calendar> days = mCalendarView.getSelectedDates();
