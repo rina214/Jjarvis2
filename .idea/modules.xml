@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Jjarvis2.iml" filepath="$PROJECT_DIR$/Jjarvis2.iml" group="Jjarvis2" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="Jjarvis2/app" />
+      <module fileurl="file://$PROJECT_DIR$/demo_tflite_gpu.iml" filepath="$PROJECT_DIR$/demo_tflite_gpu.iml" group="demo_tflite_gpu" />
+      <module fileurl="file://$PROJECT_DIR$/openCVLibrary341/openCVLibrary341.iml" filepath="$PROJECT_DIR$/openCVLibrary341/openCVLibrary341.iml" group="Jjarvis2/openCVLibrary341" />
     </modules>
   </component>
 </project>

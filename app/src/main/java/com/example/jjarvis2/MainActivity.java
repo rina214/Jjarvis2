@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     FirebaseUser user;
     String userUid;
+    ProgressDialog oDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 signIn();
+                oDialog = new ProgressDialog(MainActivity.this, android.R.style.Theme_DeviceDefault_Light_Dialog);
+                oDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                oDialog.setMessage("잠시만 기다려 주세요.");
+                oDialog.show();
             }
         });
     }
@@ -129,9 +135,12 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplication(), Login.class);
                         startActivity(intent);
                         finish();
+                        oDialog.dismiss();
                     }
                     @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) { }
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        oDialog.dismiss();
+                    }
                 });
             }
         }

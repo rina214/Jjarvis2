@@ -48,7 +48,7 @@
             android:shape="rectangle"
             android:width="200dp"
             android:background="#cc6495ed"
-            android:text="세트별"
+            android:text="스트레칭"
             android:textSize="15dp"
             android:textStyle="bold"
             android:layout_marginTop="50dp"

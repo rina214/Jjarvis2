@@ -16,12 +16,30 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        externalNativeBuild {
+            cmake {
+                arguments  '-DANDROID_TOOLCHAIN=clang', '-DANDROID_STL=gnustl_static'
+                cppFlags "-std=c++11","-frtti", "-fexceptions"
+            }
+        }
+//        ndk {
+//            abiFilters 'armeabi-v7a'
+//        }
+    }
+
+    lintOptions {
+        abortOnError false
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -33,6 +51,23 @@ android {
         targetCompatibility = 1.8
     }
 
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://jitpack.io" }
+    maven {
+        url 'https://google.bintray.com/tensorflow'
+    }
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
@@ -58,11 +93,19 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0' //차트
+
+    implementation project(':openCVLibrary341') //openCV
+    implementation deps.kotlin.stdlib.jdk
+    implementation deps.timber
+    implementation deps.android.support.supportV13
+    implementation 'org.tensorflow:tensorflow-lite-gpu:0.0.0-nightly'
+    implementation deps.android.support.appcompatV7
+    implementation deps.android.support.constraintLayout
+    implementation deps.android.support.design
+    implementation deps.android.support.annotations
+    testImplementation deps.junit
+    androidTestImplementation(deps.android.test.espresso, {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
 }
 apply plugin: 'com.google.gms.google-services'
-repositories {
-    mavenCentral()
-}
-repositories {
-    maven { url "https://jitpack.io" }
-}
