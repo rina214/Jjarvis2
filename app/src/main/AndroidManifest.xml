@@ -23,6 +23,9 @@
         <activity android:name=".SubActivity"></activity>
         <activity android:name=".Login"></activity>
         <activity android:name=".listpopup" android:theme="@android:style/Theme.Dialog" />
+        <activity android:name=".fixinfo" android:theme="@android:style/Theme.Dialog"/>
+        <activity android:name=".setwantobe" android:theme="@android:style/Theme.Dialog"/>
+
     </application>
 
 </manifest>
