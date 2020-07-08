@@ -84,9 +84,10 @@ public class Frag4 extends Fragment {
     ImageButton ibtn_previous_date, ibtn_next_date, ibtn_breakfast, ibtn_lunch, ibtn_dinner;
     Button btn_frag4_save;
     String[] LABELS = {"baby_back_ribs", "bibimbap", "cheesecake", "chicken_wings", "chocolate_cake", "churros", "donuts",
-            /*음식*/          "dumplings", "french_fries", "french_toast", "fried_rice", "garlic_bread", "gyoza", "hamburger",
-            "hot_dog", "ice_cream", "macarons", "omelette", "pizza", "ramen", "spaghetti_bolognese",
-            "spaghetti_carbonara", "steak", "sushi", "takoyaki","waffles"};
+        /*음식*/        "dumplings", "french_fries", "french_toast", "fried_rice", "garlic_bread", "gyoza", "hamburger",
+                        "hot_dog", "ice_cream", "macarons", "omelette", "pizza", "ramen", "spaghetti_bolognese",
+                        "spaghetti_carbonara", "steak", "sushi", "takoyaki","waffles"
+    };
     int[] CALORIES = {612, 560, 321, 203, 370, 237, 452, 120, 311, 229, 163, 349, 330, 520,
             /*칼로리*/       289, 207, 403, 153, 266, 436, 351, 646, 270, 45, 70, 291};
     String when = null; //아침 or 점심 or 저녁
@@ -106,7 +107,6 @@ public class Frag4 extends Fragment {
     private static ArrayList<String> labels = new ArrayList<>();
     int graphX = 0;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -119,6 +119,25 @@ public class Frag4 extends Fragment {
         Log.d("userUID", userUid);
         getDate(); //오늘 날짜를 받아옴
         getGraph(); //그래프
+
+        /*view.findViewById(R.id.btn_pose).setOnClickListener(new View.OnClickListener() { // -> Frag1에서 실행
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), CameraActivity.class);
+                getActivity().startActivityForResult(intent, 214);
+            }
+            public void onActivityResult(int requestCode, int resultCode, Intent data) {
+                if (requestCode == 214) {
+                    if (resultCode == RESULT_OK) {
+                        Toast.makeText(getContext(), "Result: " + data.getStringExtra("result"), Toast.LENGTH_SHORT).show();
+                    } else {   // RESULT_CANCEL
+                        Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+                    }
+//              } else if (requestCode == REQUEST_ANOTHER) {
+//                    ...
+                }
+            }
+        });*/
 
         ibtn_breakfast.setOnClickListener(new View.OnClickListener() { //아침 + 버튼을 누르면
             @Override
@@ -422,6 +441,7 @@ public class Frag4 extends Fragment {
                 specification spec = new specification(date,breakfast,lunch,dinner, total, breakfast_menu, lunch_menu, dinner_menu, exercise);
                 mDatabase.child("userdata").child(userUid).child(String.valueOf(spec.year())).child(String.valueOf(spec.week())).child(String.valueOf(spec.getDate())).setValue(spec);
                 delay("데이터를 저장하는 중입니다.", 2000);
+                getGraph();
             }
 
             @Override
@@ -551,7 +571,7 @@ public class Frag4 extends Fragment {
                             prediction = output[0][i];
                         }
                     }
-                    String menu = LABELS[index] + "(" + Float.toString(prediction*100).substring(0, 5) + "%) ";
+                    String menu = LABELS[index] + "(" + Float.toString(prediction*100).substring(0, 5) + "%)";
                     String calorie = Integer.toString(CALORIES[index]); //[음식 (확률 %) 칼로리 kcal] 형식으로 표시
                     if (when.equals("breakfast")) {
                         et_menu_breakfast.setText(menu);
