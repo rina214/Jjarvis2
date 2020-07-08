@@ -137,7 +137,6 @@ public class Frag79 extends Fragment {
                 }
             }
         });
-
         return view;
     }
 }

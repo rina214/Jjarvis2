@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -61,7 +60,7 @@ public class listpopup extends Activity {
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //deleteItem();
+                deleteItem(title);
             }
         });
         //운동 시작 버튼 구현
@@ -69,45 +68,16 @@ public class listpopup extends Activity {
         btn_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String[] temp = popup_content.getText().toString().split("\n");
-                for(int i = 0; i < temp.length; i++) {
-                    if (temp[i].equals("스쿼트")) {
-                        Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
-                        startActivityForResult(intent, 214);
-                    }
-                }
 
             }
         });
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 214) {
-            if (resultCode == Activity.RESULT_OK) {
-                Toast.makeText(getApplicationContext(), "Count: " + data.getStringExtra("count"), Toast.LENGTH_SHORT).show();
-            } else {   // RESULT_CANCEL
-                Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
-            }
-//              } else if (requestCode == REQUEST_ANOTHER) {
-//                    ...
-        }
-    }
-
-    private void deleteItem() {
-
-        db.child("userdata").child(userUid).child("MyList").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Log.d("snapshot", String.valueOf(snapshot.getValue()));
-                    String starttime = null, endtime = null;
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
+    private void deleteItem(String title) {
+        db.child("userdata").child(userUid).child("MyList").child(title).removeValue();
+        Intent intent = new Intent();
+        intent.putExtra("result",1);
+        setResult(RESULT_OK,intent);
+        finish();
     }
 }

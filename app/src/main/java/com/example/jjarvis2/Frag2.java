@@ -140,7 +140,6 @@ public class Frag2 extends Fragment {
                                 result_day +=dayOfMonth;
                             } //click time = 누른 곳의 날짜.
 
-
                             whenDate.setText(String.valueOf(year) + "/" + result_month + "/" +  result_day); // 선택한 날짜로 설정
 
                            // List<String> Array= new ArrayList<String>();

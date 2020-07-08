@@ -37,6 +37,7 @@ public class setwantobe extends Activity {
             @Override
             public void onClick(View v) {
                 String data = wannabe.getText().toString();
+                db.child("userdata").child(user.getUid()).child("goal weight").setValue(data);
                 Intent intent = new Intent();
                 intent.putExtra("DATA", data);
                 setResult(RESULT_OK, intent);
