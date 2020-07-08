@@ -77,7 +77,6 @@ public class Frag77 extends Fragment {
         });
 
 
-
         //delete button에 대한 이벤트 처리.
         deleteButton = (ImageButton)view.findViewById(R.id.button78) ;
         deleteButton.setOnClickListener(new Button.OnClickListener() {
@@ -87,6 +86,7 @@ public class Frag77 extends Fragment {
 
                 for (int i = count-1; i >= 0; i--) {
                     if (checkedItems.get(i)) {
+                        mDatabase.child("userdata").child(user.getUid()).child("cart").child(items.get(i)).removeValue();
                         items.remove(i) ;
                     }
                 }

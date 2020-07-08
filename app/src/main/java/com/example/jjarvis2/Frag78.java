@@ -64,11 +64,12 @@ public class Frag78 extends Fragment {
         });
         return view;
     }
-
+    
     public void SetListener() {
         View.OnClickListener Listener = new View.OnClickListener(){
             @Override
             public void onClick(View v){
+
                 TextView tempchildlayout = (TextView)view.findViewById(v.getId());
                 mDatabase.child("userdata").child(user.getUid()).child("MyList").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -161,4 +162,6 @@ public class Frag78 extends Fragment {
         SetListener();
     }
 }
+
+
 

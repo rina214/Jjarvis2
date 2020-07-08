@@ -22,6 +22,7 @@
         </activity>
         <activity android:name=".SubActivity"></activity>
         <activity android:name=".Login"></activity>
+        <activity android:name=".PopupActivity" android:theme="@android:style/Theme.Dialog" />
     </application>
 
 </manifest>

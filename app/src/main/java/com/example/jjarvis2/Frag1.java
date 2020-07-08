@@ -2,6 +2,8 @@ package com.example.jjarvis2;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,14 +25,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class Frag1 extends Fragment {
+
+public class Frag1 extends Fragment{
     View view;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+
+    /*@Override
+    public void onBackPressed() {
+        if (!mFragmentBackStack.isEmpty()) {
+            mFragmentBackStack.pop().onBack();
+        } else {
+            backPressCloseHandler.onBackPressed();
+        }
+    }*/
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.frag1, container, false);
+
         ImageButton cart=(ImageButton)view.findViewById(R.id.button77);
         cart.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -69,6 +84,7 @@ public class Frag1 extends Fragment {
         });
 
         return view;
-
     }
+
+
 }

@@ -40,6 +40,8 @@ public class Frag6 extends Fragment {
     private static final int DYNAMICBUTTON_ID = 10;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     int count = 0;
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
