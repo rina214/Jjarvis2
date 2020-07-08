@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,12 +34,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static android.app.Activity.RESULT_OK;
+
 public class Frag78 extends Fragment {
     View view;
     private DatabaseReference mDatabase;
     int count;
     int width, height;
     int top,right,left,bottom;
+    int REQUEST_TEST = 1;
     Map<String,Object> metadata = new HashMap<String,Object>();
     ArrayList<String> execdata =new ArrayList<>();
     LinearLayout list_item;
@@ -50,6 +54,23 @@ public class Frag78 extends Fragment {
         view = inflater.inflate(R.layout.frag78, container, false);
         list_item = (LinearLayout)view.findViewById(R.id.list_item);
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        refresh();
+        return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        if (requestCode == REQUEST_TEST) {
+            if (resultCode == RESULT_OK) {
+                remove_category();
+                refresh();
+            }
+        }
+
+    }
+
+    private void refresh() {
         mDatabase.child("userdata").child(user.getUid()).child("MyList").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -63,7 +84,6 @@ public class Frag78 extends Fragment {
 
             }
         });
-        return view;
     }
 
     public void SetListener() {
@@ -109,9 +129,11 @@ public class Frag78 extends Fragment {
                                     System.out.println(s);
                                 }
                                 bundle.putStringArrayList("EXECDATA", execdata);
-                                bundle.putString("TITLE", tvtext);
+                                bundle.putString("TITLE", (String) metadata.put("LISTNAME",snapshot.getKey()));
+                                bundle.putString("START", (String) metadata.put("START",snapshot.getKey()));
+                                bundle.putString("END", (String) metadata.put("END",snapshot.getKey()));
                                 intent.putExtras(bundle);
-                                startActivity(intent);
+                                startActivityForResult(intent,REQUEST_TEST);
                             }
                         }
                     }
@@ -126,7 +148,11 @@ public class Frag78 extends Fragment {
             tempchildlayout.setOnClickListener(Listener);
         }
     }
-
+    void remove_category(){
+        for(int i=0; i < count; i++){
+            list_item.removeViewInLayout(view.findViewById(i+10000));
+        }
+    }
     private void DynamicList(DataSnapshot snapshot) {
         RelativeLayout childlayout = new RelativeLayout(getContext());
 
@@ -136,6 +162,7 @@ public class Frag78 extends Fragment {
         bottom = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,5,getResources().getDisplayMetrics());
         layoutParams.setMargins(0,0,0,bottom);
         layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
+        childlayout.setId(count+10000);
         childlayout.setPadding(left,top,0,0);
         childlayout.setBackgroundColor(0xCCCCCCCC);
         childlayout.setLayoutParams(layoutParams);

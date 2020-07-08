@@ -50,6 +50,14 @@ public class Frag5 extends Fragment {
                 startActivityForResult(intent, 1);
             }
         });
+        btnchangeinfo = (Button)view.findViewById(R.id.button02);
+        btnchangeinfo.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), fixinfo.class);
+                startActivityForResult(intent, 2);
+            }
+        });
 
         //btnchangeinfo  = (Button)view.findViewById(R.button02);
         btnLogout = (Button)view.findViewById(R.id.logout);
@@ -108,6 +116,16 @@ public class Frag5 extends Fragment {
                 Toast.makeText(this.getContext(),tmp, Toast.LENGTH_SHORT).show();
             }
         }
+        if (requestCode ==2){
+            if (resultCode == RESULT_OK) {
+                String tmp1 = data.getStringExtra("DATA1");
+                Toast.makeText(this.getContext(),tmp1, Toast.LENGTH_SHORT).show();
+                String tmp2 = data.getStringExtra("DATA2");
+                Toast.makeText(this.getContext(),tmp2, Toast.LENGTH_SHORT).show();
+                String tmp3 = data.getStringExtra("DATA3");
+                Toast.makeText(this.getContext(),tmp3, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void signOut() {
@@ -125,4 +143,3 @@ public class Frag5 extends Fragment {
 
 
 }
-

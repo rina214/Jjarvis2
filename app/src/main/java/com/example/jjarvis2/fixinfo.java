@@ -32,17 +32,25 @@ public class fixinfo extends Activity {
         setContentView(R.layout.fixinfo_activity);
 
 
-        changed_height= (EditText)findViewById(R.id.wannabe);
-        changed_age= (EditText)findViewById(R.id.wannabe);
-        changed_kg= (EditText)findViewById(R.id.wannabe);
+        changed_height= (EditText)findViewById(R.id.changed_height);
+        changed_age= (EditText)findViewById(R.id.changed_age);
+        changed_kg= (EditText)findViewById(R.id.changed_kg);
         btn_ok = (Button) findViewById(R.id.btn_ok);
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String data = changed_height.getText().toString();
-                Intent intent = new Intent();
-                intent.putExtra("DATA", data);
-                setResult(RESULT_OK, intent);
+                String data1 = changed_height.getText().toString();
+                String data2 = changed_age.getText().toString();
+                String data3 = changed_kg.getText().toString();
+                Intent intent1 = new Intent();
+                Intent intent2 = new Intent();
+                Intent intent3 = new Intent();
+                intent1.putExtra("DATA1", data1);
+                intent2.putExtra("DATA2", data2);
+                intent3.putExtra("DATA3", data3);
+                setResult(RESULT_OK, intent1);
+                setResult(RESULT_OK, intent2);
+                setResult(RESULT_OK, intent3);
                 finish();
             }
         });

@@ -15,15 +15,6 @@
             android:text="Mypage"
             android:textSize="45sp"
             android:textStyle="bold" />
-        <ImageButton
-            android:id="@+id/button00"
-            android:layout_width="33dp"
-            android:layout_height="38dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginLeft="350dp"
-            android:background="#00ffffff"
-            android:scaleType="fitXY"
-            android:src="@drawable/notification"/>
     </RelativeLayout>
     <TextView
         android:id="@+id/Userid_text"
@@ -83,5 +74,4 @@
     </LinearLayout>
 
 </LinearLayout>
-
 

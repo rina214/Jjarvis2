@@ -60,7 +60,7 @@ public class listpopup extends Activity {
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //deleteItem();
+                deleteItem(title);
             }
         });
         //운동 시작 버튼 구현
@@ -73,21 +73,11 @@ public class listpopup extends Activity {
         });
     }
 
-    private void deleteItem() {
-
-        db.child("userdata").child(userUid).child("MyList").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Log.d("snapshot", String.valueOf(snapshot.getValue()));
-                    String starttime = null, endtime = null;
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
+    private void deleteItem(String title) {
+        db.child("userdata").child(userUid).child("MyList").child(title).removeValue();
+        Intent intent = new Intent();
+        intent.putExtra("result",1);
+        setResult(RESULT_OK,intent);
+        finish();
     }
 }
