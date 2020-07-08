@@ -1,48 +1,51 @@
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ScrollView1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="50dp"
-    android:background="#fffffafa">
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#FFB0C4DE">
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="커스텀"
+            android:textSize="45dp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageButton
+            android:id="@+id/button77"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginLeft="290dp"
+            android:background="#00ffffff"
+            android:scaleType="fitXY"
+            android:src="@drawable/cart"/>
+        <ImageButton
+            android:id="@+id/button78"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginLeft="350dp"
+            android:background="#00ffffff"
+            android:scaleType="fitXY"
+            android:src="@drawable/playbt"/>
+    </RelativeLayout>
+    <ScrollView
+        android:id="@+id/ScrollView1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/category"
         android:background="#fffffafa">
-        <RelativeLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="#FFB0C4DE">
-            <TextView
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="커스텀"
-                android:textSize="45dp"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <ImageButton
-                android:id="@+id/button77"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="18dp"
-                android:layout_marginLeft="290dp"
-                android:background="#00ffffff"
-                android:scaleType="fitXY"
-                android:src="@drawable/cart"/>
-            <ImageButton
-                android:id="@+id/button78"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_marginTop="18dp"
-                android:layout_marginLeft="350dp"
-                android:background="#00ffffff"
-                android:scaleType="fitXY"
-                android:src="@drawable/playbt"/>
-        </RelativeLayout>
-    </LinearLayout>
-</ScrollView>
+            android:layout_height="wrap_content"
+            android:id="@+id/category"
+            android:background="#fffffafa">
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

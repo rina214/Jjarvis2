@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,9 +40,19 @@ public class fixinfo extends Activity {
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String data1 = changed_height.getText().toString();
+                String data1 = changed_kg.getText().toString();
                 String data2 = changed_age.getText().toString();
-                String data3 = changed_kg.getText().toString();
+                String data3 = changed_height.getText().toString();
+                if (data1.length() == 0){
+                    Toast.makeText(getApplicationContext(), "몸무게를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                } else if (data2.length() == 0){
+                    Toast.makeText(getApplicationContext(), "나이를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                } else if (data3.length() == 0){
+                    Toast.makeText(getApplicationContext(), "키를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Intent intent1 = new Intent();
                 intent1.putExtra("DATA1", data1);
                 intent1.putExtra("DATA2", data2);

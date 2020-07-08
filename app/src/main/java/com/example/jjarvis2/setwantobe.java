@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,6 +38,10 @@ public class setwantobe extends Activity {
             @Override
             public void onClick(View v) {
                 String data = wannabe.getText().toString();
+                if (data.length() == 0) {
+                    Toast.makeText(getApplicationContext(), "목표 체중을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 db.child("userdata").child(user.getUid()).child("goal weight").setValue(data);
                 Intent intent = new Intent();
                 intent.putExtra("DATA", data);

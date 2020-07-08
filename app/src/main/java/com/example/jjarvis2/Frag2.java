@@ -62,108 +62,114 @@ public class Frag2 extends Fragment {
     String userUid;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+    TextView whenDate;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.frag2, container, false);
         list_item = (LinearLayout)view.findViewById(R.id.list_item);
         CalendarView mCalendarView = (CalendarView) view.findViewById(R.id.calendarView);
-        final TextView whenDate = (TextView) view.findViewById(R.id.whenDate);
+        whenDate = (TextView) view.findViewById(R.id.whenDate);
         db = FirebaseDatabase.getInstance().getReference();
         userUid = user.getUid();
+        Calendar calendar = Calendar.getInstance();
+        getData(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() // 날짜 선택 이벤트
         {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth)
             {
-
                 remove_category();
                 count=0;
-                db.child("userdata").child(userUid).child("MyList").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            Log.d("snapshot", String.valueOf(snapshot.getValue()));
-                            String starttime = null, endtime = null;
-                            for (DataSnapshot sn : snapshot.getChildren()){
-                                    if (sn.getKey().equals("START")){
-                                    String[] temptime = sn.getValue(String.class).split(" ");
-                                    starttime = temptime[0].replace("년", "");
-                                    if(temptime[1].length() == 2) {
-                                        starttime += "0";
-                                        starttime += temptime[1].replace("월", "");
-                                    } else
-                                        starttime += temptime[1].replace("월", "");
-                                    if(temptime[2].length() == 2) {
-                                        starttime += "0";
-                                        starttime += temptime[2].replace("일", "");
-                                    } else
-                                        starttime += temptime[2].replace("일", "");
-                                }
-                                else if(sn.getKey().equals("END")){
-                                    String[] temptime = sn.getValue(String.class).split(" ");
-                                    endtime = temptime[0].replace("년", "");
-                                    if(temptime[1].length() == 2) {
-                                        endtime += "0";
-                                        endtime += temptime[1].replace("월", "");
-                                    } else
-                                        endtime += temptime[1].replace("월", "");
-                                    if(temptime[2].length() == 2) {
-                                        endtime += "0";
-                                        endtime += temptime[2].replace("일", "");
-                                    } else
-                                        endtime += temptime[2].replace("일", ""); //형식을 맞춰준다.
-                                }
-                                else{
-
-                                }
-                            }
-
-                            String result_month=" ", result_day= " ";
-                            String clickTime = String.valueOf(year);
-                            if (month + 1 < 10) {
-                                clickTime += "0";
-                                clickTime += (month + 1);
-                                result_month += "0";
-                                result_month += (month + 1);
-                            } else{
-                                clickTime += (month + 1);
-                                result_month += (month + 1);
-                            }
-                            if (dayOfMonth < 10) {
-                                clickTime += "0";
-                                clickTime += dayOfMonth;
-                                result_day += "0";
-                                result_day +=dayOfMonth;
-                            } else{
-                                clickTime += dayOfMonth;
-                                result_day +=dayOfMonth;
-                            } //click time = 누른 곳의 날짜.
-
-                            whenDate.setText(String.valueOf(year) + "/" + result_month + "/" +  result_day); // 선택한 날짜로 설정
-
-                           // List<String> Array= new ArrayList<String>();
-                            if ( Integer.parseInt(starttime) <=  Integer.parseInt(clickTime) &&  Integer.parseInt(clickTime) <=  Integer.parseInt(endtime) ) {
-                                DynamicList(snapshot);
-                            }
-
-                            //Toast.makeText(getContext(), clickTime, Toast.LENGTH_SHORT).show();
-                            //Toast.makeText(getContext(), snapshot.getKey(), Toast.LENGTH_SHORT).show();
-                        }// for문 종료.
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+                getData(year, month, dayOfMonth);
             }
         });
-
-
         return view;
     }
+
+    private void getData(int year, int month, int dayOfMonth) {
+        db.child("userdata").child(userUid).child("MyList").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Log.d("snapshot", String.valueOf(snapshot.getValue()));
+                    String starttime = null, endtime = null;
+                    for (DataSnapshot sn : snapshot.getChildren()){
+                        if (sn.getKey().equals("START")){
+                            String[] temptime = sn.getValue(String.class).split(" ");
+                            starttime = temptime[0].replace("년", "");
+                            if(temptime[1].length() == 2) {
+                                starttime += "0";
+                                starttime += temptime[1].replace("월", "");
+                            } else
+                                starttime += temptime[1].replace("월", "");
+                            if(temptime[2].length() == 2) {
+                                starttime += "0";
+                                starttime += temptime[2].replace("일", "");
+                            } else
+                                starttime += temptime[2].replace("일", "");
+                        }
+                        else if(sn.getKey().equals("END")){
+                            String[] temptime = sn.getValue(String.class).split(" ");
+                            endtime = temptime[0].replace("년", "");
+                            if(temptime[1].length() == 2) {
+                                endtime += "0";
+                                endtime += temptime[1].replace("월", "");
+                            } else
+                                endtime += temptime[1].replace("월", "");
+                            if(temptime[2].length() == 2) {
+                                endtime += "0";
+                                endtime += temptime[2].replace("일", "");
+                            } else
+                                endtime += temptime[2].replace("일", ""); //형식을 맞춰준다.
+                        }
+                        else{
+
+                        }
+                    }
+
+                    String result_month=" ", result_day= " ";
+                    String clickTime = String.valueOf(year);
+                    if (month + 1 < 10) {
+                        clickTime += "0";
+                        clickTime += (month + 1);
+                        result_month += "0";
+                        result_month += (month + 1);
+                    } else{
+                        clickTime += (month + 1);
+                        result_month += (month + 1);
+                    }
+                    if (dayOfMonth < 10) {
+                        clickTime += "0";
+                        clickTime += dayOfMonth;
+                        result_day += "0";
+                        result_day +=dayOfMonth;
+                    } else{
+                        clickTime += dayOfMonth;
+                        result_day +=dayOfMonth;
+                    } //click time = 누른 곳의 날짜.
+
+                    whenDate.setText(String.valueOf(year) + "/" + result_month + "/" +  result_day); // 선택한 날짜로 설정
+
+                    // List<String> Array= new ArrayList<String>();
+                    if ( Integer.parseInt(starttime) <=  Integer.parseInt(clickTime) &&  Integer.parseInt(clickTime) <=  Integer.parseInt(endtime) ) {
+                        DynamicList(snapshot);
+                    }
+
+                    //Toast.makeText(getContext(), clickTime, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), snapshot.getKey(), Toast.LENGTH_SHORT).show();
+                }// for문 종료.
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     void remove_category(){
         for(int i=0; i < count; i++){
             list_item.removeViewInLayout(view.findViewById(i));

@@ -44,6 +44,8 @@ public class Frag77 extends Fragment {
     ArrayAdapter<String> adapter;
     private DatabaseReference mDatabase;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private boolean check = false;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -105,9 +107,16 @@ public class Frag77 extends Fragment {
             public void onClick(View v) {
                 int count = 0 ;
                 count = adapter.getCount() ;
-
-                for (int i=0; i<count; i++) {
-                    listview.setItemChecked(i, true) ;
+                if (check) {
+                    for (int i=0; i<count; i++) {
+                        listview.setItemChecked(i, false) ;
+                    }
+                    check = false;
+                } else {
+                    for (int i=0; i<count; i++) {
+                        listview.setItemChecked(i, true) ;
+                    }
+                    check = true;
                 }
             }
         }) ;
