@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -68,9 +69,28 @@ public class listpopup extends Activity {
         btn_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String[] temp = popup_content.getText().toString().split("\n");
+                for(int i = 0; i < temp.length; i++) {
+                    if (temp[i].equals("스쿼트")) {
+                        Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
+                        startActivityForResult(intent, 214);
+                    }
+                }
 
             }
         });
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 214) {
+            if (resultCode == Activity.RESULT_OK) {
+                Toast.makeText(getApplicationContext(), "Count: " + data.getStringExtra("count"), Toast.LENGTH_SHORT).show();
+            } else {   // RESULT_CANCEL
+                Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+            }
+//              } else if (requestCode == REQUEST_ANOTHER) {
+//                    ...
+        }
     }
 
     private void deleteItem() {

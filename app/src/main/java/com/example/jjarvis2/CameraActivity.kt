@@ -19,7 +19,10 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.core.view.get
+import kotlinx.android.synthetic.main.activity_camera.*
 import kotlinx.android.synthetic.main.fragment_camera2_basic.*
+import kotlinx.android.synthetic.main.fragment_camera2_basic.view.*
 
 import org.opencv.android.BaseLoaderCallback
 import org.opencv.android.LoaderCallbackInterface
@@ -29,6 +32,8 @@ import org.opencv.android.OpenCVLoader
  * Main `Activity` class for the Camera app.
  */
 class CameraActivity : Activity() {
+
+  private var countData : String = ""
 
   private val mLoaderCallback = object : BaseLoaderCallback(this) {
     override fun onManagerConnected(status: Int) {
@@ -80,12 +85,11 @@ class CameraActivity : Activity() {
     var isOpenCVInit = false
   }
 
-  override fun onDestroy() {
-    super.onDestroy()
-    val intent = Intent()
-    intent.putExtra("count", tv_count.text.toString())
-    setResult(Activity.RESULT_OK, intent)
-    finish()
+  fun changeCount(count : String) {
+    countData = count
+    var intent = Intent()
+    intent.putExtra("count", countData)
+    setResult(RESULT_OK, intent)
   }
 
 }
