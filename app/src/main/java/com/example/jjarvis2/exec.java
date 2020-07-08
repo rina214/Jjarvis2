@@ -7,7 +7,12 @@ public class exec {
     private int date;
     private Map<String,Object> exercise;
 
-    public exec(){};
+    public exec(){}
+
+    public exec(int date){
+        this.date = date;
+        this.exercise = null;
+    };
 
     public exec(int date, Map<String,Object> exercise){
         this.date = date;
