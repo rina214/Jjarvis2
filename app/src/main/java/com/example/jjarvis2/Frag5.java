@@ -114,10 +114,10 @@ public class Frag5 extends Fragment {
         //DB에 적용.(수정필요)
         String B=" ";
         if(Double.parseDouble(target)<now) {
-            B="-> 목표까지 " + String.valueOf(now-Double.valueOf(target)) + "kg 감량이 남았습니다." + "\n";
+            B="-> 목표까지 " + String.valueOf(now-Double.valueOf(target)) + "kg 감량이 남았습니다.";
         }
         else  {
-            B="(목표체중 달성완료! 헬린이에서 헬창으로 진화하셨네요!";
+            B="목표체중 달성완료! 헬린이에서 헬창으로 진화하셨네요!";
         }
 
         Userid_text.setText(A);
@@ -128,7 +128,6 @@ public class Frag5 extends Fragment {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 String tmp = data.getStringExtra("DATA");
-                Toast.makeText(this.getContext(),tmp, Toast.LENGTH_SHORT).show();
                 target = tmp;
                 setTarget();
             }
