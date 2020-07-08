@@ -17,17 +17,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>
-    <TextView
-        android:id="@+id/whenDate"
-        android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:gravity="center_vertical"
-        android:paddingLeft="170dp"
-        android:textColor="@color/color_21a4ff"
-        android:textSize="20sp" />
-
     <CalendarView
         android:id="@+id/calendarView"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#33000000"
@@ -37,6 +29,27 @@
         android:unfocusedMonthDateColor="#fafafa"
         android:weekSeparatorLineColor="#00ff00" />
     />
+    <TextView
+        android:id="@+id/whenDate"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:textColor="#000000"
+        android:textSize="20sp" />
+    <ScrollView android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fffffafa" >
+        <LinearLayout
+            android:id="@+id/list_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="50dp"
+            android:layout_marginTop="10dp">
+        </LinearLayout>
+    </ScrollView>
 
 
 </LinearLayout>

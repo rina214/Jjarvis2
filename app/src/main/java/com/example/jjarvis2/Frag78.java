@@ -3,6 +3,7 @@ package com.example.jjarvis2;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -71,6 +72,9 @@ public class Frag78 extends Fragment {
             public void onClick(View v){
                 TextView tempchildlayout = (TextView)view.findViewById(v.getId());
                 mDatabase.child("userdata").child(user.getUid()).child("MyList").addListenerForSingleValueEvent(new ValueEventListener() {
+                    Intent intent = new Intent(getActivity(), listpopup.class);
+                    Bundle bundle = new Bundle();
+
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()){
@@ -104,6 +108,10 @@ public class Frag78 extends Fragment {
                                 for(String s : execdata){
                                     System.out.println(s);
                                 }
+                                bundle.putStringArrayList("EXECDATA", execdata);
+                                bundle.putString("TITLE", tvtext);
+                                intent.putExtras(bundle);
+                                startActivity(intent);
                             }
                         }
                     }
@@ -161,4 +169,6 @@ public class Frag78 extends Fragment {
         SetListener();
     }
 }
+
+
 

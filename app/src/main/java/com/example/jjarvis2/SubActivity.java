@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,9 +18,12 @@ import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -27,6 +31,7 @@ public class SubActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     FragmentManager fm;
     androidx.fragment.app.FragmentTransaction tran;
+
 
     Frag1 frag1;
     Frag2 frag2;
@@ -40,13 +45,10 @@ public class SubActivity extends AppCompatActivity {
     Frag7 frag7;
     Frag8 frag8;
 
-    public interface OnBackKeyPressedListener {
-        public void onBack();
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_sub);
         Fitness.getRecordingClient(this, GoogleSignIn.getLastSignedInAccount(this))
                 .subscribe(DataType.TYPE_ACTIVITY_SAMPLES)
@@ -64,6 +66,7 @@ public class SubActivity extends AppCompatActivity {
                 });
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
+
         frag1 = new Frag1();
         frag2 = new Frag2();
         frag3 = new Frag3();
@@ -75,6 +78,7 @@ public class SubActivity extends AppCompatActivity {
         frag6 = new Frag6();
         frag7 = new Frag7();
         frag8 = new Frag8(); //1-1,1-2,1-3
+
 
         setFrag(1); //첫 프레그먼트 지정
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener()); //Bot_navigation bar obj 형성
@@ -179,5 +183,6 @@ public class SubActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.main_frame, fragment);
         fragmentTransaction.commit();
     }
+
 }
 
